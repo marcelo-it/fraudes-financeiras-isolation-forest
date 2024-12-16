@@ -157,6 +157,79 @@ Para Xuan (apud \cite{martins2022}), a detecção de fraudes busca identificar t
 
 Para \cite{bhati2024}, o aprendizado de máquina (ML), um ramo da inteligência artificial (IA), apresenta-se como uma abordagem promissora para a detecção de fraudes em cartões de crédito, permitindo que sistemas aprendam com dados históricos e melhorem suas previsões sem a necessidade de programação manual. No entanto, sua aplicação enfrenta desafios consideráveis, como a anonimização dos dados transacionais, que dificulta a reprodução de estudos, e a natureza dinâmica e desbalanceada das fraudes, que compromete a precisão dos modelos atuais. Esses obstáculos reforçam a necessidade de desenvolver soluções mais eficazes e robustas.
 
+\subsection{Metodologia CRISP-DM}
+
+A análise de grandes volumes de dados tornou-se um pilar central nas estratégias de TI corporativas, desempenhando um papel significativo na tomada de decisões estratégicas \cite{schroer2021}. A ciência de dados, por meio de modelos matemáticos e analíticos, destaca-se ao adotar metodologias estruturadas amplamente reconhecidas como fatores críticos para o sucesso. Entre essas, a metodologia CRISP-DM (\textit{Cross Industry Standard Process for Data Mining}) é amplamente aplicada devido à sua flexibilidade e aplicabilidade em diferentes setores \cite{silva2023}.
+
+O CRISP-DM é um modelo consolidado, composto por seis fases iterativas que abrangem desde o entendimento do negócio até a implantação. Sua estrutura cíclica permite ajustes contínuos com base nos aprendizados de processos anteriores, garantindo flexibilidade e evolução constante \cite{brzozowska2023}. A sequência das fases não é rígida, permitindo revisões e adaptações conforme os resultados evoluem.
+
+\subsubsection{Fases do CRISP-DM}
+
+\begin{enumerate}
+    \item \textbf{Entendimento do Negócio:} Define os objetivos do projeto sob uma perspectiva empresarial, traduzindo-os em problemas de mineração de dados e criando um plano inicial.
+    \item \textbf{Compreensão dos Dados:} Envolve a coleta inicial e análise exploratória, identificando problemas de qualidade e padrões relevantes para hipóteses iniciais.
+    \item \textbf{Preparação dos Dados:} Inclui a construção do conjunto de dados final, envolvendo seleção, limpeza, transformação e criação de atributos derivados.
+    \item \textbf{Modelagem:} Técnicas de modelagem são aplicadas e ajustadas, garantindo alinhamento com os critérios definidos e otimização dos parâmetros.
+    \item \textbf{Avaliação:} Os modelos são avaliados em relação aos objetivos de negócios, revisando todo o processo para identificar possíveis lacunas.
+    \item \textbf{Implantação:} Organiza e apresenta o conhecimento gerado de forma útil ao cliente, variando desde relatórios simples até integração em processos decisórios.
+\end{enumerate}
+
+Pesquisas destacam a ampla adoção da mineração de dados em setores como o financeiro, onde metodologias como KDD, SEMMA e CRISP-DM têm sido utilizadas para assegurar benefícios consistentes \cite{plotnikova2022}. Contudo, por serem metodologias independentes de setor, nem sempre atendem a demandas específicas, como as do setor financeiro, destacando a necessidade de adaptações para contextos especializados.
+
+\cite{brzozowska2023} complementam essa análise, demonstrando que o CRISP-DM lidera sua aplicação em 42\% dos casos de mineração de dados, seguido por metodologias proprietárias (19\%) e pela SEMMA (13\%). A pesquisa também enfatiza a importância da preparação e compreensão dos dados como etapas mais trabalhosas do processo, enquanto as fases subsequentes seguem o modelo sistemático descrito. Essa abordagem cíclica garante que o modelo evolua continuamente, respondendo a novas questões de negócios com base nos aprendizados obtidos.
+
+\subsection{Isolation Forest}
+
+O Isolation Forest é definido como um algoritmo de detecção de anomalias eficiente e independente de modelos, capaz de identificar amostras anômalas sem a necessidade de construir perfis detalhados dos dados \cite{chen2023}. Desenvolvido por Liu et al. (2008), o algoritmo utiliza árvores para isolar instâncias anômalas, baseando-se no comprimento médio do caminho entre os nós analisados e o nó raiz. Essa abordagem elimina a necessidade de cálculos de distância e densidade, aproveitando as características das anomalias — pontos raros e distintos — para separá-las rapidamente dos dados regulares, com eficiência temporal linear e baixo consumo de memória.
+
+Apesar de sua eficácia, o algoritmo apresenta limitações importantes:
+\begin{itemize}
+    \item \textbf{Aleatoriedade elevada:} A geração de árvores com amostragem aleatória pode reduzir a capacidade de detecção caso os subconjuntos não contenham anomalias.
+    \item \textbf{Desempenho de generalização limitado:} O aumento no número de árvores frequentemente gera estruturas semelhantes, reduzindo a eficiência e aumentando os custos computacionais.
+    \item \textbf{Estabilidade reduzida:} A necessidade de configurar hiperparâmetros manualmente pode levar a resultados inconsistentes entre diferentes conjuntos de dados.
+\end{itemize}
+
+Essas limitações reforçam a necessidade de melhorias e adaptações para aumentar a robustez e a eficiência do algoritmo em diferentes contextos. A exploração de propriedades dos dados anômalos, como baixa frequência e diferenças marcantes em relação aos dados normais, continua sendo a base para seu desempenho, embora ajustes sejam essenciais para lidar com questões como aleatoriedade e estabilidade.
+
+\cite{gupta2020}. descrevem o Isolation Forest como um algoritmo não supervisionado que utiliza um conjunto de árvores de decisão para identificar anomalias. Em vez de calcular distâncias entre pontos ou criar perfis de instâncias normais, ele isola anomalias particionando os dados. Os pontos com o menor comprimento médio de caminho nas árvores de decisão são classificados como anômalos.
+
+\subsubsection{Métricas de Avaliação}
+Como o Isolation Forest é uma técnica não supervisionada, são necessárias métricas que independam de limiares de predição e ofereçam uma pontuação precisa. Entre as mais adequadas estão:
+\begin{itemize}
+    \item \textbf{AUC (Área sob a Curva ROC):} Mede a capacidade de um modelo binário de distinguir entre verdadeiros e falsos positivos, com valores variando de 0,5 (base) a 1 (ideal).
+    \item \textbf{AUCPR (Área sob a Curva de Precisão-Revocação):} Analisa a relação entre precisão e revocação em diferentes limiares. É especialmente útil para conjuntos de dados desbalanceados devido à sua sensibilidade a verdadeiros positivos, falsos negativos e falsos positivos, ignorando os verdadeiros negativos.
+\end{itemize}
+
+A implementação binária composta do Isolation Forest apresenta desempenho equivalente ao da biblioteca Scikit-learn e oferece a vantagem de escalabilidade para grandes volumes de dados, integrando-se facilmente ao Apache Spark. Essa característica é essencial para processar grandes conjuntos de dados em contextos transacionais.
+
+\subsubsection{Etapas de Implementação}
+A implementação do Isolation Forest envolve três etapas principais: seleção de hiperparâmetros, treinamento do modelo e avaliação com métricas apropriadas.
+
+\subsubsection{Seleção de Hiperparâmetros}
+Os dois hiperparâmetros principais do Isolation Forest são:
+\begin{itemize}
+    \item \textbf{Número de Árvores:} Define a quantidade de árvores na floresta. Mais árvores podem aumentar a precisão na detecção de anomalias, mas também elevam a complexidade computacional.
+    \item \textbf{Nível de Contaminação:} Representa a proporção estimada de anomalias no conjunto de dados. Esse parâmetro deve ser ajustado com validação cruzada ou conhecimento especializado para equilibrar precisão e revocação.
+\end{itemize}
+
+\subsubsection{Treinamento do Modelo}
+Após definir os hiperparâmetros, o modelo é treinado utilizando dados pré-processados \cite{meduri2024}. Durante o treinamento, as árvores de isolamento dividem o espaço de características aleatoriamente até isolar cada ponto de dado. Pontuações de anomalia são atribuídas com base no comprimento médio do caminho necessário para isolar cada ponto, sendo os valores mais altos associados a possíveis anomalias.
+
+\subsubsection{Seleção e Impacto do Limiar}
+O limiar de pontuação de anomalia diferencia dados normais de anômalos, afetando o equilíbrio entre precisão (capacidade de evitar falsos positivos) e revocação (capacidade de detectar a maioria das anomalias). Métodos avançados, como curvas ROC-AUC e métricas específicas, ajudam a selecionar limiares adequados considerando o desbalanceamento das classes e a eficácia do modelo.
+
+\subsubsection{Avaliação do Modelo}
+A avaliação do modelo considera quatro métricas principais:
+\begin{enumerate}
+    \item \textbf{Precisão:} Mede a proporção de anomalias corretamente identificadas entre todas as classificadas como anômalas.
+    \item \textbf{Revocação:} Avalia a capacidade do modelo de identificar a maioria das anomalias reais.
+    \item \textbf{F1-Score:} Combina precisão e revocação para cenários de classes desbalanceadas, utilizando a média harmônica.
+    \item \textbf{ROC-AUC:} Reflete o desempenho geral do modelo ao medir a relação entre a taxa de verdadeiros positivos e falsos positivos em diferentes limiares.
+\end{enumerate}
+
+Essas etapas garantem que o modelo seja otimizado para identificar anomalias de maneira eficaz, mesmo em cenários com dados desbalanceados e complexos, como na detecção de fraudes.
+
+
 
 % REFERÊNCIAS
 \newpage
