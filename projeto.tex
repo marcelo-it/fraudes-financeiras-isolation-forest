@@ -229,6 +229,188 @@ A avaliação do modelo considera quatro métricas principais:
 
 Essas etapas garantem que o modelo seja otimizado para identificar anomalias de maneira eficaz, mesmo em cenários com dados desbalanceados e complexos, como na detecção de fraudes.
 
+\subsection{Motores de Decisão de Crédito}
+
+De acordo com a \cite{serasa2024}, os motores de decisão de crédito são ferramentas que auxiliam na tomada de decisões financeiras, otimizando processos e reduzindo riscos operacionais. Esses sistemas utilizam análises avançadas e combinações de dados internos e de mercado para fornecer decisões precisas, baseadas no perfil de risco de cada cliente.
+
+\subsubsection{Principais Benefícios dos Motores de Decisão}
+
+\begin{enumerate}
+    \item \textbf{Agilidade e Eficiência:} Automatizam a análise de crédito, reduzindo o tempo de resposta e otimizando processos operacionais.
+    \item \textbf{Redução de Riscos:} Diminuem a exposição a fraudes e inadimplências, garantindo decisões mais seguras com ferramentas específicas, como validação cadastral e scores de fraude.
+    \item \textbf{Melhoria na Identificação de Clientes:} Identificam clientes com baixo risco, tornando as negociações mais vantajosas e seguras.
+    \item \textbf{Automação e Padronização:} Simplificam estruturas operacionais e aumentam a consistência nas análises de crédito, alinhadas às políticas da empresa.
+    \item \textbf{Aumento de Vendas:} Aceleram o processo de decisão, permitindo que as vendas sejam concluídas mais rapidamente.
+\end{enumerate}
+
+A operação do motor de decisão baseia-se em regras de negócio predefinidas e na análise dos dados inseridos no sistema. A ferramenta calcula o perfil de risco do cliente por meio de scores e indicadores. 
+
+De acordo com a \cite{deps_sd}, os motores de decisão de crédito são soluções estratégicas para empresas de diferentes portes e setores, proporcionando agilidade, segurança e melhores resultados financeiros, enquanto minimizam riscos e otimizam processos.
+
+\subsubsection{Como Funciona}
+
+O motor de decisão de crédito é uma tecnologia que automatiza o processo de análise e concessão de crédito, combinando algoritmos de análise e bases de dados robustas. Ele avalia o risco de inadimplência dos clientes, define limites seguros e agiliza a aprovação de vendas a prazo. Em sistemas adaptados, permite que vendedores realizem análises diretamente, aumentando a produtividade e poupando tempo.
+
+\subsubsection{Vantagens dos Motores de Decisão}
+
+\begin{enumerate}
+    \item \textbf{Maior Fluxo de Informações:} Atualiza continuamente a base de dados com novos históricos de pagamentos, aprendendo e ajustando parâmetros para maior precisão.
+    \item \textbf{Estrutura Simplificada:} Reduz a necessidade de equipes para análise manual, permitindo que profissionais se concentrem em funções estratégicas e casos excepcionais.
+    \item \textbf{Segurança para Ampliar Limites:} Identifica perfis de clientes de baixo risco, possibilitando a concessão de limites maiores, mesmo para novos clientes.
+    \item \textbf{Melhor Experiência de Compra:} A análise rápida garante respostas quase imediatas sobre a concessão de crédito, acelerando o processo de vendas e otimizando a experiência do cliente.
+\end{enumerate}
+
+Os motores de decisão de crédito representam uma solução eficiente e estratégica para empresas que buscam modernizar seus processos de crédito, reduzindo custos, aumentando a precisão e melhorando a experiência do cliente.
+
+\section{DESENVOLVIMENTO}
+\subsection{Metodologia}
+
+A presente pesquisa adota uma abordagem quantitativa, descritiva e explicativa, fundamentada em procedimentos experimentais e documentais. Por meio de um raciocínio dedutivo, a investigação empírica explora a aplicação do algoritmo \textit{Isolation Forest} em dados históricos de transações financeiras para a identificação de fraudes previamente registradas. 
+
+A eficácia do modelo é avaliada utilizando métricas específicas de desempenho, como:
+\begin{itemize}
+    \item \textbf{Precisão:} Mede a proporção de verdadeiros positivos entre todas as classificações positivas realizadas pelo modelo.
+    \item \textbf{Recall:} Avalia a capacidade do modelo de identificar a maior quantidade possível de fraudes reais.
+    \item \textbf{AUCPR (\textit{Área Sob a Curva de Precisão-Revocação}):} Analisa o equilíbrio entre precisão e revocação, sendo especialmente adequada para conjuntos de dados desbalanceados.
+\end{itemize}
+
+A metodologia empregada segue o framework CRISP-DM (\textit{Cross Industry Standard Process for Data Mining}), que orienta a organização do processo em etapas claras e iterativas, garantindo flexibilidade e adaptação ao longo do estudo. As etapas incluem:
+\begin{enumerate}
+    \item \textbf{Entendimento do Negócio:} Definir os objetivos e os requisitos da pesquisa.
+    \item \textbf{Compreensão dos Dados:} Realizar a coleta e análise exploratória dos dados históricos das transações financeiras.
+    \item \textbf{Preparação dos Dados:} Selecionar, limpar e transformar os dados para adequação ao modelo.
+    \item \textbf{Modelagem:} Aplicar o algoritmo \textit{Isolation Forest} com ajustes nos hiperparâmetros.
+    \item \textbf{Avaliação:} Validar os resultados utilizando as métricas de desempenho mencionadas.
+    \item \textbf{Implantação:} Gerar relatórios e recomendações para integração do modelo no fluxo de análise de crédito.
+\end{enumerate}
+
+\subsection{Entendimento do Negócio}
+
+A CISP - Central de Informações São Paulo é uma associação sem fins lucrativos, fundada em 1972, com a missão de tornar-se referência no desenvolvimento de ferramentas técnicas e tecnológicas para a gestão de risco de crédito. Atualmente, a associação congrega 192 grandes indústrias de bens de consumo, organizadas em oito segmentos de atuação: Alimentos, Bebidas, Higiene Pessoal e Cosméticos, Papel, Papelaria, Utilidades Domésticas e Eletroeletrônicos.
+
+A filiação à CISP está sujeita a critérios rigorosos, definidos pela assembleia geral composta pelos representantes das indústrias associadas. Esses critérios incluem o volume mínimo de clientes e o faturamento anual. Diferentemente de um \textit{bureau} de crédito tradicional, a CISP caracteriza-se como um \textit{hub} de troca de informações, promovendo a colaboração entre seus associados por meio do compartilhamento de dados.
+
+Regida por um estatuto, a associação estabelece diretrizes claras e obrigações para seus membros, sendo a reciprocidade um dos principais requisitos. A reciprocidade exige que os associados enviem, periodicamente, arquivos contendo informações comerciais de seus clientes. Esses dados são submetidos a processos de validação e enriquecimento, garantindo sua consistência e qualidade. A base de dados da CISP é composta exclusivamente por clientes ativos — definidos como aqueles que realizaram transações comerciais nos últimos 12 meses ou, em casos excepcionais, possuem débitos pendentes fora desse período.
+
+\subsubsection{Enriquecimento de Dados}
+
+O enriquecimento da base de dados inclui a integração de informações cadastrais provenientes de fontes públicas, como:
+\begin{itemize}
+    \item Receita Federal do Brasil;
+    \item QSA (Quadro de Sócios e Administradores);
+    \item Sintegra;
+    \item Suframa;
+    \item Regime Tributário do Simples Nacional.
+\end{itemize}
+
+Além disso, são incorporadas informações restritivas, como:
+\begin{itemize}
+    \item Registros de cheques sem fundos, obtidos diretamente do CCF BACEN;
+    \item Dados de protestos, coletados no CENPROT;
+    \item Informações relacionadas a recuperação judicial, dívidas vencidas, cobranças amigáveis e registros de possíveis fraudes, fornecidas tanto pelos associados quanto pela própria CISP.
+\end{itemize}
+
+Com base nos dados enriquecidos, a CISP aplica um modelo de \textit{Rating}, que avalia o risco de performance dos clientes e atribui notas de A (excelente) a E (deficitário). Essa classificação oferece aos associados uma base objetiva para a tomada de decisões sobre concessão de crédito. Entretanto, o modelo atual não considera fatores adicionais relacionados ao risco de crédito, como alterações cadastrais frequentes ou aumentos atípicos no volume de compras. Essas informações são consolidadas em relatórios detalhados disponibilizados pela CISP e analisadas pelos tomadores de decisão, exclusivamente para a concessão de crédito a pessoas jurídicas.
+
+\subsubsection{Identificação de Padrões Comportamentais}
+
+Adicionalmente, a CISP promove a interação entre os profissionais de crédito e cobrança de seus associados por meio de plataformas e encontros periódicos. Durante esses fóruns, foram identificados padrões comportamentais associados a clientes fraudulentos. Em muitos casos, as fraudes envolveram empresas que inicialmente apresentavam boas classificações de risco de crédito e realizavam compras regulares, mas que, em um curto período, exibiram comportamentos de inadimplência significativa, configurando potenciais golpes financeiros.
+
+Essas discussões permitiram levantar hipóteses sobre padrões comportamentais que não são adequadamente capturados pelos modelos tradicionais de análise de risco. Entre esses padrões destacam-se:
+\begin{enumerate}
+    \item \textbf{Alterações Cadastrais:} Mudanças frequentes em dados cadastrais, como endereço, razão social, CNAE ou e-mail.
+    \item \textbf{Crescimento Atípico no Volume de Compras:} Aumentos repentinos e incomuns no volume de compras realizadas por um cliente.
+    \item \textbf{Comportamento no Volume de Consultas:} Elevação anormal na quantidade de consultas realizadas sobre o CNPJ de um cliente em um curto período.
+    \item \textbf{Tempo de Atividade vs. Data de Fundação:} Inconsistências entre a data de fundação da empresa e seu período recente de atividade.
+    \item \textbf{Crescimento Atípico no Débito Total:} Incrementos súbitos no volume total de débitos acumulados pelo cliente.
+    \item \textbf{Crescimento na Quantidade de Associadas no Débito Total:} Aumento expressivo no número de empresas associadas ao débito total do cliente.
+    \item \textbf{Crescimento Atípico no Valor do Maior Acúmulo:} Expansões repentinas no maior valor acumulado registrado para o cliente.
+    \item \textbf{Crescimento na Quantidade de Associadas no Maior Acúmulo:} Elevação significativa no número de empresas relacionadas ao maior acúmulo de débitos do cliente.
+\end{enumerate}
+
+\subsubsection{Risco de Crédito e Impactos Financeiros}
+
+Com base na base de dados da CISP, que totaliza aproximadamente 1,4 milhão de CNPJs ativos do mercado interno, estima-se que cerca de 15\% desses registros apresentem inadimplência severa, classificados como risco D ou E. Essas condições indicam dificuldades extremas, ou mesmo a impossibilidade, de recuperação dos valores devidos. Atualmente, não é possível mensurar com precisão quais desses casos configuram, de fato, golpes financeiros. Juntas, as dívidas desses CNPJs totalizam mais de R\$ 2,1 bilhões, representando um risco significativo para os associados.
+
+\subsubsection{Conclusão}
+Nesta etapa, foi possível mapear e categorizar algumas hipóteses de golpes financeiros que afetam as indústrias associadas, além de compreender os potenciais benefícios do desenvolvimento de uma solução para identificá-los. Esse entendimento reforçou a importância de mitigar fraudes financeiras como meio de reduzir perdas, proteger os ativos das empresas e aprimorar a eficiência e segurança nos processos de concessão de crédito.
+\subsection{Compreensão dos Dados}
+
+O \textit{dataset} utilizado na pesquisa possui \textbf{1.777.725 linhas e 19 colunas}. A Figura~\ref{fig:dicionario_dados} apresenta o dicionário de dados empregado no estudo, detalhando as variáveis analisadas, seus respectivos tipos de dados, uma breve descrição e exemplos de valores. Esse dicionário desempenhou um papel crucial na estruturação do modelo proposto, contribuindo para a organização e consistência na análise dos dados.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{dicionariodedados.png}
+    \caption{Dicionário de Dados Original}
+    \label{fig:dicionario_dados}
+\end{figure}
+
+\section{Preparação dos Dados}
+
+O primeiro passo na preparação dos dados foi a renomeação de todas as variáveis para o idioma inglês, com o objetivo de facilitar a replicação do estudo por outros pesquisadores e profissionais, ampliando sua acessibilidade e compreensão.
+
+Na sequência, foram aplicadas às variáveis textuais as funções \texttt{str.strip()} e \texttt{str.lower()} em Python, para remover espaços em excesso e padronizar o formato em letras minúsculas. Essas transformações garantiram maior consistência nas informações, reduzindo erros decorrentes de formatos inconsistentes.
+
+Para variáveis relacionadas a datas, foi utilizado \texttt{pd.to\_datetime} (biblioteca Pandas), que converteu os valores em um formato padronizado. O parâmetro \texttt{errors='coerce'} tratou valores inválidos, substituindo-os por nulos (NaT). Além disso, o método \texttt{.dt.normalize()} ajustou as datas ao horário padrão, eliminando informações desnecessárias sobre tempo. Essas mudanças asseguraram uniformidade e integridade dos dados temporais.
+
+No tratamento de variáveis numéricas com valores ausentes, foi utilizado o comando:
+\begin{itemize}
+    \item \texttt{fillna(0.0).astype(int)}: Substituiu valores nulos por 0.0 e converteu as colunas para o tipo inteiro, garantindo consistência no formato.
+\end{itemize}
+
+Variáveis com alta concentração de valores nulos, como \texttt{name}, \texttt{cnae}, \texttt{status}, \texttt{address}, \texttt{city} e \texttt{neighborhood}, apresentaram 59 registros ausentes devido a limitações na fonte de dados (Receita Federal do Brasil). Como esses registros se referiam a CNPJs baixados sem informações adicionais, optou-se por excluí-los, preservando a integridade do \textit{dataset}.
+
+\subsection{Criação de Novas Variáveis}
+
+Para validar a hipótese de alterações cadastrais, foram criadas variáveis booleanas: \texttt{addressChanged}, \texttt{nameChanged}, \texttt{emailChanged} e \texttt{cnaeChanged}, indicando alterações nas respectivas informações ao longo do tempo. O processo envolveu:
+\begin{enumerate}
+    \item Comparação de valores (atual e anterior) para cada cliente;
+    \item Identificação de alterações específicas dentro do mesmo \textit{customerID};
+    \item Armazenamento dos resultados em colunas booleanas correspondentes.
+\end{enumerate}
+
+Além disso, a variável \texttt{customerID} foi anonimizada com o algoritmo \textbf{SHA-256}, e a coluna original foi excluída. A nova coluna \texttt{customer} foi posicionada como a primeira no \textit{dataset}.
+
+\subsection{Transformações Relacionadas ao Tempo de Fundação}
+
+Foi criada a variável \texttt{riskFoundation}, classificando empresas com base no número de anos desde sua fundação:
+\begin{itemize}
+    \item \textbf{High Risk:} Menos de 3 anos;
+    \item \textbf{Low Risk:} Mais de 20 anos;
+    \item Faixas intermediárias (\textit{Moderate-High, Moderate e Low-Moderate}) refletem níveis progressivos de estabilidade.
+\end{itemize}
+
+Para investigar inconsistências entre tempo de atividade e data de fundação, foi criada a variável \texttt{registrationAlert}, que sinaliza casos em que a data de registro diverge do período de atividade esperado.
+
+\subsection{Análises de Crescimento Atípico}
+
+Foram desenvolvidas variáveis auxiliares para identificar padrões atípicos:
+\begin{enumerate}
+    \item \textbf{Comportamento no Volume de Consultas:} A variável \texttt{queriesIncreaseAlert} foi criada ao calcular a média móvel de 3 meses para a variável \texttt{queries} e identificar aumentos superiores a 30\%.
+    \item \textbf{Crescimento no Maior Acúmulo:} A variável \texttt{quantityGreaterAccumulationAlert} sinalizou aumentos significativos na variável \texttt{quantityGreaterAccumulation}, com base em uma média móvel de 3 meses e aumento superior a 30\%.
+    \item \textbf{Crescimento no Débito Total:} A variável \texttt{quantityDebitAlert} identificou crescimentos atípicos no débito total, seguindo a mesma metodologia.
+\end{enumerate}
+
+Após essas análises, colunas auxiliares foram removidas, mantendo o \textit{dataset} enxuto e organizado.
+
+\subsection{Normalização e Preparo Final}
+
+Variáveis como \texttt{amountDebit} e \texttt{amountGreaterAccumulation} foram normalizadas com \texttt{np.log1p} para reduzir assimetrias e ajustadas em faixas categóricas (\textit{Very Low, Low, Medium, High}). A análise inicial mostrou distribuições equilibradas após a remoção de \textit{outliers} com base no \textit{Intervalo Interquartil} (IQR).
+
+A variável preditora \texttt{default} foi criada a partir da classificação \texttt{rating}, indicando alto risco de inadimplência (\texttt{True}) para clientes com \texttt{rating} `d' ou `e'. Variáveis como \texttt{customer} e \texttt{updatedMonth} foram removidas por não contribuírem diretamente para a detecção de fraudes financeiras.
+
+\subsection{Resultado Final}
+
+Após a preparação, o \textit{dataset} final foi composto pelas seguintes variáveis relevantes, otimizadas para aplicação no modelo \textit{Isolation Forest}, garantindo eficiência na detecção de fraudes financeiras.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{dicionariodedados2.png}
+    \caption{Dicionário de Dados Renomeado}
+    \label{fig:dicionario_dados}
+\end{figure}
+
+
 
 
 % REFERÊNCIAS
