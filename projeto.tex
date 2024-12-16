@@ -403,15 +403,93 @@ A variável preditora \texttt{default} foi criada a partir da classificação \t
 
 Após a preparação, o \textit{dataset} final foi composto pelas seguintes variáveis relevantes, otimizadas para aplicação no modelo \textit{Isolation Forest}, garantindo eficiência na detecção de fraudes financeiras.
 
+
+Essas etapas resultaram em um \textit{dataset} robusto, focado em variáveis relevantes para a aplicação do modelo \textit{Isolation Forest}, garantindo maior eficiência na detecção de fraudes financeiras.
+
+
+\section{Modelagem}
+
+O estudo utilizou o algoritmo \textit{Isolation Forest}, da biblioteca \textit{Scikit-learn}, para detectar golpes financeiros em operações de crédito realizadas por indústrias de bens de consumo. Esse modelo foi escolhido devido à sua eficiência na identificação de anomalias em grandes volumes de dados, utilizando o conceito de isolamento, onde instâncias anômalas são mais facilmente identificadas em razão de seu comportamento atípico em relação à maioria dos dados.
+
+A implementação do modelo foi precedida por uma preparação rigorosa dos dados, com etapas de normalização, categorização e remoção de \textit{outliers}, garantindo a consistência e a qualidade necessárias para o treinamento. Para transformar variáveis categóricas e booleanas em um formato numérico adequado, foi aplicado o \textit{One-Hot Encoding} utilizando a função \texttt{pd.get\_dummies} da biblioteca Pandas. Esse processo converteu variáveis categóricas em múltiplas colunas binárias, permitindo que o modelo processasse as informações sem introduzir hierarquias artificiais. As variáveis transformadas incluíram aspectos como estado do cliente, alterações cadastrais, alertas e classificações de risco, destacando a variável \texttt{riskFoundation}, que foi codificada em colunas independentes como \texttt{riskFoundation\_High}, \texttt{riskFoundation\_Moderate} e \texttt{riskFoundation\_Low}.
+
+O \textit{Isolation Forest} foi configurado com uma taxa de contaminação de 5\% (\texttt{contamination=0.05}), que define a proporção esperada de anomalias, e o parâmetro \texttt{random\_state=42} para garantir a reprodutibilidade dos resultados. O modelo foi treinado com o método \texttt{fit}, ajustando-se aos padrões dos dados para identificar instâncias normais e anômalas. Após o treinamento, o método \texttt{predict} classificou cada instância do \textit{dataset}, gerando previsões armazenadas na nova coluna \texttt{anomaly}, onde 1 indica instâncias normais e -1 aponta anomalias.
+
+A análise da coluna \texttt{anomaly} revelou a proporção de instâncias normais e anômalas, permitindo uma visão inicial da distribuição de anomalias no \textit{dataset}. Essa abordagem demonstrou-se eficiente para identificar comportamentos atípicos, contribuindo para a detecção de fraudes financeiras em operações de crédito. A integração de um processo robusto de preparação dos dados com o treinamento do modelo destacou o \textit{Isolation Forest} como uma ferramenta escalável e eficaz para mitigação de riscos financeiros.
+
+\section{Avaliação do Modelo}
+
+Para realizar a avaliação do modelo, o \textit{Isolation Forest} gera predições que classificam as observações como normais (1) ou anomalias (-1). A comparação dessas predições com os rótulos verdadeiros (\texttt{true\_labels}) permite calcular métricas de desempenho, como precisão, \textit{recall}, acurácia e F1-Score. Contudo, como o \textit{dataset} original não possuía rótulos verdadeiros, optou-se por simular rótulos com base em regras de negócio e conhecimento do domínio, considerando a natureza e o contexto dos dados analisados.
+
+Existem várias técnicas para lidar com a ausência de rótulos, como a injeção de anomalias sintéticas ou a avaliação qualitativa das observações classificadas pelo modelo. Neste estudo, a simulação baseada em regras foi escolhida devido à familiaridade com o contexto do \textit{dataset} e à identificação de padrões consistentes em golpes financeiros observados na CISP.
+
+Com base em regras de negócio, foi criada a variável \texttt{true\_labels} no \textit{dataset}, fundamentada em características recorrentes identificadas em casos reais de fraudes financeiras. As principais características observadas foram:
+
+\begin{enumerate}
+    \item \textbf{Crescimento Atípico no Volume de Compras:} Representado pelas variáveis \texttt{quantityGreaterAccumulationAlert} e \texttt{quantityDebitAlert}, que assumem o valor \texttt{True} em situações de comportamento anômalo, como um aumento significativo e incomum no volume de compras.
+
+    \item \textbf{Aumento no Comportamento de Consultas:} Identificado pela variável \texttt{queriesIncreaseAlert}, que sinaliza \texttt{True} quando há um aumento expressivo no número de consultas realizadas, comportamento frequentemente associado a tentativas de golpe.
+
+    \item \textbf{Inconsistência no Tempo de Atividade vs. Data de Fundação:} Alguns CNPJs permaneceram inativos por longos períodos e foram posteriormente reativados sem histórico de relacionamento com indústrias, um comportamento típico em golpes financeiros. Essa característica é representada pela variável \texttt{riskFoundation}, com o valor \texttt{high}.
+\end{enumerate}
+
+Essas regras foram aplicadas como critérios para identificar anomalias no \textit{dataset}, resultando na criação de uma base de rótulos (\texttt{true\_labels}) consistente e alinhada ao conhecimento de domínio para a detecção de fraudes financeiras.
+
+Com a aplicação da técnica, o modelo \textit{Isolation Forest} identificou 1.338 casos de anomalias no \textit{dataset}, indicando observações com padrões atípicos e potencialmente fraudulentos.
+
+\section{Deployment (Implantação)}
+
+O modelo foi implementado através da criação de um serviço (API), que recebe os dados das solicitações e retorna uma classificação em tempo real. Esse modelo foi integrado ao sistema de motor de crédito atualmente disponibilizado pela CISP aos seus associados. Vale destacar que o fluxo de concessão de crédito descrito já está em operação com os associados, e a inclusão da consulta à API de detecção de golpes financeiros foi a principal novidade incorporada ao processo.
+
+A Figura~\ref{fig:fluxo_credito} ilustra o fluxo de concessão de crédito para os associados da CISP que utilizam o motor de crédito. Esse fluxo operacional segue as etapas descritas a seguir:
+
+\begin{enumerate}
+    \item \textbf{Identificação do Cliente:} 
+    Inicialmente, o cliente do associado é identificado como sendo um novo cliente (sem histórico de movimentações com o associado) ou um cliente ativo (com histórico de transações anteriores). O cliente, então, realiza uma solicitação de compra junto ao associado.
+
+    \item \textbf{Consulta Inicial ao ERP:}
+    O sistema CRM do associado envia a solicitação ao ERP para verificar se o cliente possui crédito disponível.
+    \begin{itemize}
+        \item \textbf{Caso tenha crédito suficiente e em vigência:} O pedido de compra é aprovado automaticamente, e o cliente é comunicado.
+        \item \textbf{Caso não tenha crédito:} Se o crédito estiver expirado, comprometido ou insuficiente, o ERP encaminha a solicitação ao motor de crédito da CISP para realização de uma análise detalhada.
+    \end{itemize}
+
+    \item \textbf{Análise pelo Motor de Crédito da CISP:}
+    O motor de crédito da CISP contém todas as regras personalizadas para executar a análise de crédito, de acordo com a política de crédito da empresa associada. O fluxo de análise segue as etapas abaixo:
+    \begin{itemize}
+        \item \textbf{Consulta às Fontes de Informação:}
+        O motor consulta diversas bases de dados, incluindo:
+        \begin{itemize}
+            \item Dados cadastrais em fontes públicas;
+            \item Outras informações definidas previamente pela empresa.
+        \end{itemize}
+        Como parte das boas práticas de gestão de risco de crédito, as configurações dessas fontes e políticas devem ser alinhadas às diretrizes da política de crédito da empresa.
+
+        \item \textbf{Cálculo do Risco de Performance:} 
+        Após a coleta das informações, o motor realiza o cálculo do risco de performance do cliente. Esse cálculo considera aspectos como histórico de crédito e a capacidade de pagamento do cliente.
+
+        \item \textbf{Inclusão da Consulta à API de Detecção de Golpes:} 
+        Como novidade no processo, o motor de crédito agora consulta a API de detecção de golpes financeiros, que retorna um resultado indicando se a transação é caracterizada como um possível golpe financeiro ou não.
+    \end{itemize}
+
+    \item \textbf{Tomada de Decisão:} 
+    Após a conclusão da análise de risco e a verificação contra golpes financeiros, o motor de crédito aplica as regras de tomada de decisão, conforme configurado na política de crédito da empresa associada.
+    \begin{itemize}
+        \item \textit{Exemplo:} Se o cliente possui uma classificação de rating "boa" e uma alta probabilidade de golpe financeiro, o sistema analisa os critérios de recusa contidos na política de crédito do associado e toma uma decisão automatizada.
+    \end{itemize}
+
+    \item \textbf{Geração do Dossiê:} 
+    Toda decisão é acompanhada por um dossiê, que reúne diversas informações e relatórios para garantir transparência e rastreabilidade do processo. Esse dossiê inclui dados coletados, resultados das análises e as justificativas para a decisão final.
+\end{enumerate}
+
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{dicionariodedados2.png}
-    \caption{Dicionário de Dados Renomeado}
-    \label{fig:dicionario_dados}
+    \includegraphics[width=0.8\textwidth]{motordecredito.png}
+    \caption{Fluxo de Concessão de Crédito Integrado com a API de Detecção de Golpes}
+    \label{fig:fluxo_credito}
 \end{figure}
 
-
-
+O fluxo de concessão de crédito já existente nos associados da CISP foi aprimorado com a inclusão da API de detecção de golpes financeiros, adicionando uma camada adicional de proteção contra fraudes. Essa integração não apenas reforçou a gestão de riscos, mas também contribuiu para maior agilidade e precisão nas decisões de crédito automatizadas.
 
 % REFERÊNCIAS
 \newpage
