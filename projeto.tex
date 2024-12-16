@@ -111,12 +111,60 @@ Os modelos de \textit{credit score} são baseados em informações fornecidas pe
 
 \cite{fuhr2022} destaca que a classificação de crédito tem como objetivo desenvolver um modelo que integre informações quantitativas e qualitativas sobre a credibilidade da empresa, refletindo a qualidade do devedor. O \textit{credit scoring}, por sua vez, tem como principal propósito avaliar o risco de inadimplência com base em uma pontuação, indicando a probabilidade de um candidato não honrar com seus compromissos acordados.
 
+\subsection{Detecção de Fraudes/Golpes Financeiros}
+
+A fraude financeira representa uma ameaça crescente, com impactos negativos significativos no setor financeiro e na sociedade. Martins e \cite{martins2022} destacam que, embora a mineração de dados seja eficaz na detecção de fraudes, ela enfrenta desafios devido à constante mudança nos perfis comportamentais e à similaridade entre transações fraudulentas e legítimas. Os autores também salientam que a prevenção de fraudes é uma abordagem proativa, focada em evitar sua ocorrência, enquanto a detecção atua de forma reativa, identificando transações fraudulentas em andamento.
+
+Para Santos (apud \cite{soares2024}), "fraude é um processo sistemático de ações cujo objetivo é distorcer dados intencionalmente e que se estabelece quando agentes internos e externos da companhia possuem a intenção de agir dissimuladamente." Conforme \cite{soares2024}, a Associação dos Investigadores de Fraude Certificados (ACFE) classifica as fraudes em três categorias principais:
+\begin{enumerate}
+    \item \textbf{Corrupção}: Envolve subornos ou uso indevido de bens públicos.
+    \item \textbf{Apropriação indevida de ativos}: Inclui fraudes que impactam ou não diretamente o caixa da empresa.
+    \item \textbf{Demonstrações financeiras fraudulentas}: Compreendem receitas fictícias e ocultação de passivos e despesas.
+\end{enumerate}
+
+Entre as fraudes mais comuns no Brasil, as relacionadas a contas a pagar e contas a receber representam 23\% do total de investigações de fraudes conduzidas, sendo detectadas, em sua maioria, por denúncias anônimas, denúncias nominais e atividades de auditoria interna.
+
+Segundo \cite{thinkdata2024}, a prevenção de fraudes na concessão de crédito é um tema de crescente importância no contexto financeiro brasileiro, especialmente diante do aumento expressivo de tentativas fraudulentas, como roubo de identidade e apresentação de informações falsas. O cenário atual exige que instituições financeiras e empresas adotem estratégias robustas e proativas para identificar e mitigar esses riscos, protegendo a integridade do sistema financeiro e os consumidores. Dados recentes mostram que, em 2022, o Brasil registrou quase 3,9 milhões de tentativas de fraude de identidade, evidenciando a vulnerabilidade do setor financeiro.
+
+Entre os principais desafios da prevenção de fraudes na concessão de crédito estão:
+\begin{itemize}
+    \item \textbf{Risco de inadimplência}: Requer uma análise precisa da capacidade do cliente de cumprir suas obrigações financeiras, utilizando históricos de crédito e modelos de risco.
+    \item \textbf{Avanço tecnológico}: Acompanhamento da evolução das tecnologias para garantir segurança e inovação nos processos de análise.
+    \item \textbf{Fraudes sofisticadas}: Enfrentar técnicas cada vez mais avançadas de roubo de identidade e falsificação documental, demandando medidas rigorosas de validação.
+\end{itemize}
+
+Práticas como a checagem de dados com operadoras de telefonia, validação de documentos e uso de inteligência artificial oferecem às instituições maior controle e capacidade de resposta aos riscos emergentes.
+
+Conforme mencionado por \cite{maniraj2019}, a fraude, definida como um ato ilícito ou criminal para obtenção de benefícios financeiros ou pessoais, é um desafio significativo no setor financeiro. Diversos estudos exploram técnicas para detecção de fraudes, como mineração de dados, aprendizado supervisionado e não supervisionado, e detecção adversarial. Embora esses métodos tenham alcançado sucesso em algumas áreas, ainda enfrentam limitações na criação de soluções permanentes e consistentes.
+\subsection{Detecção de Anomalias}
+
+Conforme mencionado por \cite{gupta2020}, a detecção de anomalias é um método para identificar ocorrências suspeitas de eventos e itens de dados que podem causar problemas para as autoridades competentes. As anomalias nos dados geralmente estão associadas a questões como problemas de segurança, falhas em servidores, fraudes bancárias, falhas estruturais em edifícios, defeitos clínicos, entre outros.
+
+\subsection{Aprendizado de Máquina e Detecção de Fraudes}
+
+De acordo com Maxwell (apud \cite{martins2022}, o aprendizado de máquina (ML – \textit{Machine Learning}) é o estudo de algoritmos de computador que se aprimoram automaticamente com a experiência. É tratado como uma subárea da inteligência artificial (IA). Algoritmos de aprendizado de máquina constroem um modelo baseado em dados de amostra, conhecidos como “dados de treinamento”, a fim de fazer previsões ou decisões sem serem explicitamente programados para isso. Esses algoritmos são usados em uma ampla variedade de aplicações, como filtragem de e-mails e visão computacional, em que é difícil ou inviável desenvolver algoritmos convencionais para realizar as tarefas necessárias.
+
+\cite{martins2022} citam que as principais instituições financeiras, tanto nacionais quanto internacionais, têm adotado algoritmos de aprendizado de máquina para analisar dados, alcançando resultados financeiros significativos. Essa tecnologia tem sido aplicada com sucesso em áreas como análise de risco de crédito, previsão de falências, estimativas de cotações de moedas e ações, segmentação de mercado e detecção de fraudes.
+
+Para Xuan (apud \cite{martins2022}), a detecção de fraudes busca identificar transações atípicas, que podem ocorrer em diferentes contextos, como operações financeiras, consumo de energia, compras, uso de recursos sociais, acesso a redes de computadores e manipulação contábil. Algoritmos de aprendizado de máquina são amplamente utilizados para classificar transações como legítimas ou fraudulentas, configurando um problema de classificação binária. No entanto, a análise enfrenta desafios, como a predominância de transações legítimas nos dados e a constante criação de novas fraudes, exigindo a adaptação contínua dos modelos. Por isso, a detecção de fraudes também é vista como um problema de fluxo contínuo de dados.
+
+\cite{gupta2020} mencionam que o aprendizado de máquina oferece métodos eficazes para extrair informações úteis de grandes volumes de dados, auxiliando na tomada de decisão e aumentando a precisão preditiva. No contexto da detecção de fraudes com cartões de crédito, o foco principal é diferenciar transações fraudulentas das legítimas. O treinamento de sistemas de detecção de fraudes pode ser realizado de três formas:
+\begin{enumerate}
+    \item \textbf{Supervisionado:} Utiliza conjuntos de dados rotulados, nos quais os itens possuem informações detalhadas e estão previamente classificados. O modelo é treinado para analisar novos dados e realizar a classificação.
+    \item \textbf{Semissupervisionado:} Combina dados rotulados e não rotulados, sendo mais utilizado que o método supervisionado. Essa abordagem é ideal para cenários em que há maior disponibilidade de dados não rotulados.
+    \item \textbf{Não supervisionado:} Baseia-se em dados não rotulados e identifica padrões anômalos de forma autônoma, assumindo que exceções são raras no conjunto de dados. É a estratégia mais utilizada, especialmente para tarefas mais complexas, embora possa ser mais imprevisível.
+\end{enumerate}
+
+Para \cite{bhati2024}, o aprendizado de máquina (ML), um ramo da inteligência artificial (IA), apresenta-se como uma abordagem promissora para a detecção de fraudes em cartões de crédito, permitindo que sistemas aprendam com dados históricos e melhorem suas previsões sem a necessidade de programação manual. No entanto, sua aplicação enfrenta desafios consideráveis, como a anonimização dos dados transacionais, que dificulta a reprodução de estudos, e a natureza dinâmica e desbalanceada das fraudes, que compromete a precisão dos modelos atuais. Esses obstáculos reforçam a necessidade de desenvolver soluções mais eficazes e robustas.
 
 
 % REFERÊNCIAS
 \newpage
 \bibliographystyle{abnt-alf}
 \bibliography{biblproj} % Certifique-se de que o arquivo biblproj.bib está correto
+
+
+
 
 
 
