@@ -336,6 +336,29 @@ A base de dados da CISP, que totaliza aproximadamente 1,4 milhão de CNPJs ativo
 
 \subsubsection{Conclusão}
 Nesta etapa, foi possível mapear e categorizar algumas hipóteses de golpes financeiros que afetam as indústrias associadas, além de compreender os potenciais benefícios do desenvolvimento de uma solução para identificá-los. Esse entendimento reforçou a importância de mitigar fraudes financeiras como meio de reduzir perdas, proteger os ativos das empresas e aprimorar a eficiência e segurança nos processos de concessão de crédito.
+
+
+\subsection{Materiais e Ferramentas}
+
+O estudo foi realizado utilizando a versão gratuita da plataforma \textbf{Google Colab}, uma ferramenta baseada em nuvem que permite a execução de experimentos computacionais de forma interativa e escalável. O Google Colab oferece recursos pré-configurados e acessíveis para projetos de ciência de dados e aprendizado de máquina, eliminando a necessidade de infraestrutura local.
+
+\subsubsection{Configuração da Plataforma}
+O ambiente de execução foi configurado no back-end gratuito do Google Compute Engine, utilizando o interpretador Python 3. As especificações técnicas disponíveis incluíram 12,7 GB de memória RAM e 225,8 GB de disco temporário. Apesar de limitações em termos de persistência dos dados e acesso a GPUs ou TPUs em sessões prolongadas, a versão gratuita do Colab foi suficiente para conduzir todas as etapas do estudo, incluindo a manipulação de um \textit{dataset} com 1.777.725 linhas e 19 colunas.
+
+\subsubsection{Linguagem de Programação e Bibliotecas Utilizadas}
+O estudo foi desenvolvido inteiramente em \textbf{Python}, versão 3, devido à sua versatilidade e ampla utilização em projetos de ciência de dados e aprendizado de máquina. As principais bibliotecas utilizadas foram:
+
+\begin{itemize}
+    \item \textbf{Pandas:} Para manipulação e análise de dados, garantindo organização, limpeza e transformação do \textit{dataset}.
+    \item \textbf{NumPy:} Para operações numéricas eficientes e manipulação de arrays multidimensionais.
+    \item \textbf{Hashlib:} Para anonimização dos identificadores únicos (CNPJs) por meio do algoritmo SHA-256, assegurando conformidade com requisitos de privacidade.
+    \item \textbf{Matplotlib e Seaborn:} Para criação de gráficos e visualizações, auxiliando na análise exploratória e na identificação de padrões.
+    \item \textbf{Scikit-learn:} Para implementação do algoritmo \textit{Isolation Forest}, aplicado na detecção de anomalias.
+\end{itemize}
+
+\subsubsection{Justificativa da Escolha}
+A utilização da versão gratuita do \textit{Google Colab} foi motivada por sua acessibilidade, disponibilidade universal e suporte a projetos colaborativos. Essa versão permitiu o desenvolvimento completo do estudo sem custos adicionais, aproveitando os recursos computacionais adequados às demandas do projeto. A integração com bibliotecas robustas e bem estabelecidas no ecossistema Python assegurou a eficiência e a reprodutibilidade das análises realizadas.
+
 \subsection{Compreensão dos Dados}
 
 O \textit{dataset} original disponibilizado e utilizado na pesquisa possui \textbf{1.777.725 linhas e 19 colunas}. 
