@@ -8,6 +8,8 @@
 \usepackage[top=3cm,bottom=2cm,left=3cm,right=2cm]{geometry}
 \usepackage{indentfirst}
 \usepackage{float}
+\usepackage{rotating}
+
 
 
 \begin{document}
@@ -48,13 +50,18 @@ São Paulo\\
 \textbf{RESUMO}
 \end{center}
 \renewcommand{\baselinestretch}{0.6666666}
-Esta dissertação investiga a identificação de padrões associados a golpes financeiros em indústrias de bens de consumo que concedem crédito a clientes pessoas jurídicas para a aquisição de seus produtos, utilizando técnicas de inteligência artificial, com implementação no fluxo operacional do motor de crédito.
-A análise da base de dados revelou que aproximadamente 15\% dos clientes — cerca de 148.000 empresas — encontram-se em estado de inadimplência não recuperada, representando mais de R\$ 2,1 bilhões em dívidas. Esses clientes possuem um score de crédito classificado como de alto risco.
-O modelo de crédito atualmente utilizado pela empresa apresenta limitações significativas, pois desconsidera fatores críticos que podem indicar golpes na concessão de crédito. Enquanto o score de crédito tradicional baseia-se principalmente no histórico de pagamentos e nas restrições associadas ao cliente, golpes financeiros frequentemente envolvem alterações cadastrais recentes, como mudanças de endereço ou código de atividade econômica, além de comportamentos atípicos, como aumentos súbitos no volume de compras e consultas, e discrepâncias entre o tempo de atividade declarado e a data de fundação da empresa.
-Para enfrentar esses desafios, esta pesquisa desenvolveu uma solução baseada em modelos de \textit{machine learning}, utilizando técnicas avançadas de detecção de anomalias, como o Isolation Forest. Essa técnica destacou-se por validar as principais hipóteses relacionadas aos padrões de fraudes. A abordagem demonstrou eficiência na identificação de comportamentos atípicos e padrões indicativos de golpes financeiros, contribuindo significativamente para o aprimoramento da avaliação de risco de crédito e para a mitigação de perdas financeiras associadas a fraudes.
+Esta dissertação investiga a identificação de padrões associados a golpes financeiros em indústrias de bens de consumo que concedem crédito a clientes pessoas jurídicas para a aquisição de seus produtos, utilizando técnicas de inteligência artificial e implementando soluções no fluxo operacional do motor de crédito.
+
+A análise da base de dados revelou que aproximadamente 15\% dos clientes — cerca de 148.000 empresas — encontram-se em estado de inadimplência não recuperada, representando mais de R\$ 2,1 bilhões em dívidas. Esses clientes possuem um \textit{score} de crédito classificado como de alto risco.
+
+O modelo de crédito atualmente utilizado pela empresa apresenta limitações significativas, desconsiderando fatores críticos que podem indicar golpes na concessão de crédito. Enquanto o \textit{score} de crédito tradicional baseia-se principalmente no histórico de pagamentos e nas restrições associadas ao cliente, golpes financeiros frequentemente envolvem alterações cadastrais recentes, como mudanças de endereço ou código de atividade econômica, além de comportamentos atípicos, como aumentos súbitos no volume de compras e consultas, e discrepâncias entre o tempo de atividade declarado e a data de fundação da empresa.
+
+Para enfrentar os desafios de identificação de padrões relacionados a golpes financeiros e incorporar estas características no modelo de crédito, esta pesquisa desenvolveu uma solução baseada em modelos de \textit{machine learning}, abrangendo desde técnicas de classificação, por meio do algoritmo CBA (\textit{Classification Based Associations}), até técnicas avançadas de detecção de anomalias, como o \textit{Isolation Forest}. 
+
+A técnica de detecção de anomalias demonstrou desempenho superior em comparação à classificação para este conjunto de dados, validando as principais hipóteses relacionadas aos padrões de fraudes. Essa abordagem mostrou-se eficiente na identificação de comportamentos atípicos e padrões indicativos de golpes financeiros, contribuindo de forma significativa para o aprimoramento da avaliação de risco de crédito e para a mitigação de perdas financeiras associadas a fraudes.
 \\[0.5cm]
 \begin{flushleft}
-{\bf Palavras-chave:} {Análise de Crédito, Score de crédito, Aprendizado de Máquina, Isolation Forest, Detecção de Fraude, Golpe Financeiro e CRISP-DM.}
+{\bf Palavras-chave:} {Análise de Crédito, \textit{Score} de crédito, Aprendizado de Máquina, \textit{Classification Based Associations}, \textit{Isolation Forest}, Detecção de Fraudes, Golpe Financeiro e CRISP-DM.}
 \end{flushleft}
 
 % SUMÁRIO
@@ -71,7 +78,7 @@ Para enfrentar esses desafios, esta pesquisa desenvolveu uma solução baseada e
 \section{INTRODUÇÃO}
 A CISP (Central de Informações São Paulo) é uma associação sem fins lucrativos fundada em 1972, com a missão de oferecer soluções exclusivas para análise de risco de crédito, contribuindo para o desenvolvimento econômico nacional. Composta por 192 grandes indústrias de produtos de largo consumo, organizadas em oito segmentos (Alimentos, Bebidas, Higiene Pessoal e Cosméticos, Papel, Papelaria, Utilidades Domésticas, Eletroeletrônicos e Produtos de Limpeza), a CISP representa aproximadamente 8\% do PIB brasileiro, destacando-se como uma associação de grande relevância no setor.
 
-O sistema da CISP opera exclusivamente com clientes pessoas jurídicas, abrangendo cerca de 1.400.000 CNPJs. Os associados fornecem periodicamente informações comerciais de seus clientes, enriquecidas com dados de fontes públicas, como Receita Federal, Sintegra, Suframa e Protestos. Com base nessas informações, é gerada uma classificação de risco de performance (Score de Crédito), que atribui notas de A (menor risco) a E (maior risco). Atualmente, 1.700 usuários das áreas de crédito e cobrança utilizam os relatórios da CISP, acessados manualmente, por API ou de forma automatizada via motor de crédito.
+O sistema da CISP opera exclusivamente com clientes pessoas jurídicas, abrangendo cerca de 1.400.000 CNPJs. Os associados fornecem periodicamente informações comerciais de seus clientes, que são enriquecidas com dados de fontes públicas, como Receita Federal, Sintegra, Suframa e Protestos. Com base nessas informações, é gerada uma classificação de risco de performance (\textit{score} de crédito), que atribui notas de A (menor risco) a E (maior risco). Atualmente, 1.700 usuários das áreas de crédito e cobrança utilizam os relatórios da CISP, acessados manualmente, por API ou de forma automatizada via motor de crédito.
 
 No entanto, fóruns realizados pela CISP com profissionais das áreas de crédito e cobrança identificaram limitações no modelo atual, que não considera fatores importantes relacionados a golpes financeiros. Exemplos incluem crescimento atípico de compras, alterações cadastrais recentes e discrepâncias entre a data de fundação e o tempo de atividade. Dados preliminares revelam que 15\% dos clientes — cerca de 148.000 empresas — encontram-se em inadimplência não recuperada, acumulando R\$ 2,1 bilhões em dívidas.
 
@@ -80,7 +87,9 @@ O objetivo deste estudo é propor e validar um modelo de inteligência artificia
 Para garantir a confidencialidade e a conformidade legal, o estudo utilizou dados anonimizados por meio do algoritmo de hash SHA-256, que transforma os CNPJs dos clientes em valores únicos e irreversíveis. A preparação dos dados e o desenvolvimento do modelo seguiram o framework CRISP-DM (\textit{Cross-Industry Standard Process for Data Mining}), uma metodologia amplamente reconhecida para projetos de ciência de dados.
 
 Esta pesquisa utiliza algoritmos de inteligência artificial para detectar golpes financeiros, oferecendo uma solução técnica robusta que contribui tanto para a segurança financeira quanto para a inovação na gestão de risco de crédito.
+Para garantir a confidencialidade e a conformidade legal, o estudo utilizou dados anonimizados por meio do algoritmo de hash SHA-256, que transforma os CNPJs dos clientes em valores únicos e irreversíveis. A preparação dos dados e o desenvolvimento do modelo seguiram o framework CRISP-DM (\textit{Cross-Industry Standard Process for Data Mining}), uma metodologia amplamente reconhecida para projetos de ciência de dados.
 
+Esta pesquisa utiliza algoritmos de inteligência artificial para detectar golpes financeiros, oferecendo uma solução técnica robusta que contribui tanto para a segurança financeira quanto para a inovação na gestão de risco de crédito.
 % REFERENCIAL TEÓRICO
 \newpage
 \section{REFERENCIAL TEÓRICO}
@@ -102,14 +111,14 @@ Para \cite{rossato2020}, é um instrumento para alavancar vendas, disponibilizad
 
 Isso ocorre porque as empresas frequentemente optam por comercializar seus produtos e serviços a prazo, exigindo critérios claros para avaliar e decidir sobre a concessão de crédito. Esse processo envolve a análise do risco de inadimplência, ou seja, a possibilidade de não pagamento dos valores acordados. Segundo Gouvêa Gonçalves (apud \cite{fuhr2022}), “A avaliação do risco tem por objetivo melhorar a qualidade de uma carteira de clientes, favorecendo uma venda saudável e evitando ao máximo a perda de valores, sobre créditos fornecidos de forma equivocada ou a clientes que geram prejuízos aos negócios. Empresas que possuem boa avaliação levam vantagens sobre seus concorrentes”. 
 
-\cite{montevechi2022} citam que a concessão de crédito, fundamental para a indústria financeira, envolve uma relação contratual entre credores e tomadores, assumindo riscos inerentes, como a inadimplência. Para mitigar esses riscos, instituições financeiras desenvolvem metodologias para avaliar a probabilidade de não pagamento e classificar os tomadores com base em dados históricos. Entre essas ferramentas, destaca-se o Score de crédito, que utiliza modelos matemáticos para prever o comportamento dos devedores e estimar a \textit{probability of default}, contribuindo para a sustentabilidade do sistema creditício e o sucesso das operações financeiras.
-\subsection{Avaliação de Risco e Score de crédito}
+\cite{montevechi2022} citam que a concessão de crédito, fundamental para a indústria financeira, envolve uma relação contratual entre credores e tomadores, assumindo riscos inerentes, como a inadimplência. Para mitigar esses riscos, instituições financeiras desenvolvem metodologias para avaliar a probabilidade de não pagamento e classificar os tomadores com base em dados históricos. Entre essas ferramentas, destaca-se o \textit{score} de crédito, que utiliza modelos matemáticos para prever o comportamento dos devedores e estimar a \textit{probability of default}, contribuindo para a sustentabilidade do sistema creditício e o sucesso das operações financeiras.
+\subsection{Avaliação de Risco e \textit{Score} de crédito}
 
-Para Gouvêa Gonçalves (apud \cite{fuhr2022}), a avaliação de risco visa melhorar a qualidade da carteira de clientes, evitando perdas por créditos mal concedidos e promovendo vendas saudáveis, conferindo vantagem competitiva às empresas que realizam boas análises. A tecnologia de Score de crédito contribuiu significativamente para a diminuição dos custos relacionados à análise de crédito, garantindo consistência nas informações, maior velocidade e acurácia na tomada de decisão.
+Para Gouvêa Gonçalves (apud \cite{fuhr2022}), a avaliação de risco visa melhorar a qualidade da carteira de clientes, evitando perdas por créditos mal concedidos e promovendo vendas saudáveis, conferindo vantagem competitiva às empresas que realizam boas análises. A tecnologia de \textit{score} de crédito contribuiu significativamente para a diminuição dos custos relacionados à análise de crédito, garantindo consistência nas informações, maior velocidade e acurácia na tomada de decisão.
 
-Os modelos de Score de crédito são baseados em informações fornecidas pelos próprios solicitantes e, por meio de técnicas estatísticas e matemáticas, atribuem pontuações que distinguem bons e maus pagadores, segundo \cite{beserra2022}. De acordo \cite{francisco2012}, a classificação do risco de crédito é vista como uma ferramenta fundamental para analistas e instituições.
+Os modelos de \textit{score} de crédito são baseados em informações fornecidas pelos próprios solicitantes e, por meio de técnicas estatísticas e matemáticas, atribuem pontuações que distinguem bons e maus pagadores, segundo \cite{beserra2022}. De acordo \cite{francisco2012}, a classificação do risco de crédito é vista como uma ferramenta fundamental para analistas e instituições.
 
-\cite{fuhr2022} destaca que a classificação de crédito tem como objetivo desenvolver um modelo que integre informações quantitativas e qualitativas sobre a credibilidade da empresa, refletindo a qualidade do devedor. O Score de crédito, por sua vez, tem como principal propósito avaliar o risco de inadimplência com base em uma pontuação, indicando a probabilidade de um candidato não honrar com seus compromissos acordados.
+\cite{fuhr2022} destaca que a classificação de crédito tem como objetivo desenvolver um modelo que integre informações quantitativas e qualitativas sobre a credibilidade da empresa, refletindo a qualidade do devedor. O \textit{score} de crédito, por sua vez, tem como principal propósito avaliar o risco de inadimplência com base em uma pontuação, indicando a probabilidade de um candidato não honrar com seus compromissos acordados.
 
 \subsection{Motores de Decisão de Crédito}
 
@@ -119,13 +128,13 @@ De acordo com a \cite{serasa2024}, os motores de decisão de crédito são ferra
 
 \begin{enumerate}
     \item \textbf{Agilidade e Eficiência:} Automatizam a análise de crédito, reduzindo o tempo de resposta e otimizando processos operacionais.
-    \item \textbf{Redução de Riscos:} Diminuem a exposição a fraudes e inadimplências, garantindo decisões mais seguras com ferramentas específicas, como validação cadastral e scores de fraude.
+    \item \textbf{Redução de Riscos:} Diminuem a exposição a fraudes e inadimplências, garantindo decisões mais seguras com ferramentas específicas, como validação cadastral e \textit{scores} de fraude.
     \item \textbf{Melhoria na Identificação de Clientes:} Identificam clientes com baixo risco, tornando as negociações mais vantajosas e seguras.
     \item \textbf{Automação e Padronização:} Simplificam estruturas operacionais e aumentam a consistência nas análises de crédito, alinhadas às políticas da empresa.
     \item \textbf{Aumento de Vendas:} Aceleram o processo de decisão, permitindo que as vendas sejam concluídas mais rapidamente.
 \end{enumerate}
 
-A operação do motor de decisão baseia-se em regras de negócio predefinidas e na análise dos dados inseridos no sistema. A ferramenta calcula o perfil de risco do cliente por meio de scores e indicadores. 
+A operação do motor de decisão baseia-se em regras de negócio predefinidas e na análise dos dados inseridos no sistema. A ferramenta calcula o perfil de risco do cliente por meio de \textit{scores} e indicadores. 
 
 De acordo com a \cite{deps_sd}, os motores de decisão de crédito são soluções estratégicas para empresas de diferentes portes e setores, proporcionando agilidade, segurança e melhores resultados financeiros, enquanto minimizam riscos e otimizam processos.
 
@@ -145,7 +154,6 @@ O motor de decisão de crédito é uma tecnologia que automatiza o processo de a
 Os motores de decisão de crédito representam uma solução eficiente e estratégica para empresas que buscam modernizar seus processos de crédito, reduzindo custos, aumentando a precisão e melhorando a experiência do cliente.
 
 \subsection{Golpes Financeiros e Detecção de Fraudes}
-
 A fraude financeira representa uma ameaça crescente, com impactos negativos significativos no setor financeiro e na sociedade. \cite{martins2022} destacam que, embora a mineração de dados seja eficaz na detecção de fraudes, ela enfrenta desafios devido à constante mudança nos perfis comportamentais e à similaridade entre transações fraudulentas e legítimas. Os autores também salientam que a prevenção de fraudes é uma abordagem proativa, focada em evitar sua ocorrência, enquanto a detecção atua de forma reativa, identificando transações fraudulentas em andamento.
 
 Para Santos (apud \cite{soares2024}), "fraude é um processo sistemático de ações cujo objetivo é distorcer dados intencionalmente e que se estabelece quando agentes internos e externos da companhia possuem a intenção de agir dissimuladamente." Conforme \cite{soares2024}, a Associação dos Investigadores de Fraude Certificados (ACFE) classifica as fraudes em três categorias principais:
@@ -165,8 +173,6 @@ Entre os principais desafios da prevenção de fraudes na concessão de crédito
     \item \textbf{Avanço tecnológico}: Acompanhamento da evolução das tecnologias para garantir segurança e inovação nos processos de análise.
     \item \textbf{Fraudes sofisticadas}: Enfrentar técnicas cada vez mais avançadas de roubo de identidade e falsificação documental, demandando medidas rigorosas de validação.
 \end{itemize}
-
-Práticas como a checagem de dados com operadoras de telefonia, validação de documentos e uso de inteligência artificial oferecem às instituições maior controle e capacidade de resposta aos riscos emergentes.
 
 Conforme mencionado por \cite{maniraj2019}, a fraude, definida como um ato ilícito ou criminal para obtenção de benefícios financeiros ou pessoais, é um desafio significativo no setor financeiro. Diversos estudos exploram técnicas para detecção de fraudes, como mineração de dados, aprendizado supervisionado e não supervisionado, e detecção adversarial. Embora esses métodos tenham alcançado sucesso em algumas áreas, ainda enfrentam limitações na criação de soluções permanentes e consistentes.
 \subsection{Detecção de Anomalias}
@@ -211,7 +217,30 @@ Pesquisas destacam a ampla adoção da mineração de dados em setores como o fi
 
 \cite{brzozowska2023} complementam essa análise, demonstrando que o CRISP-DM lidera sua aplicação em 42\% dos casos de mineração de dados, seguido por metodologias proprietárias (19\%) e pela SEMMA (13\%). A pesquisa também enfatiza a importância da preparação e compreensão dos dados como etapas mais trabalhosas do processo, enquanto as fases subsequentes seguem o modelo sistemático descrito. Essa abordagem cíclica garante que o modelo evolua continuamente, respondendo a novas questões de negócios com base nos aprendizados obtidos.
 
-\subsection{Isolation Forest}
+\subsection{CBA (\textit{Classification Based Associations})}
+
+O CBA \textit{(Classification Based Associations)} é um algoritmo de aprendizado supervisionado amplamente utilizado devido à sua simplicidade, eficácia e capacidade de gerar classificadores precisos e interpretáveis. Desde sua criação, ele tem sido aplicado em uma variedade de tarefas de classificação, sendo especialmente reconhecido no campo de Regras de Associação Classificadoras ARC \cite{westermann2019}.
+
+O algoritmo utiliza Regras de Associação Classificadoras (CARs) como base, organizando e selecionando um subconjunto relevante para a classificação de características. Sua abordagem combina interpretabilidade, precisão e rapidez na construção do modelo, sendo dividido em duas fases principais:
+\begin{enumerate}
+    \item \textbf{Gerador de Regras (CBA-RG):} Emprega o algoritmo \textit{Apriori} para identificar CARs que atendam aos critérios mínimos de suporte e confiança, utilizando dados históricos para minerar regras frequentes \cite{kumi2021}.
+    \item \textbf{Construtor do Classificador (CBA-CB):} Refina as regras geradas por meio de ordenação e poda, priorizando aquelas com maior suporte e confiança, garantindo precisão e interpretabilidade no classificador final \cite{filip2018}.
+\end{enumerate}
+
+Duas versões do algoritmo foram propostas: \textit{M1}, que realiza múltiplas varreduras no banco de dados para otimizar a seleção de regras, e \textit{M2}, projetada para cenários com grandes volumes de dados \cite{filip2018}. No entanto, avanços tecnológicos recentes favorecem o desempenho do \textit{M1}, como demonstrado em benchmarks recentes, que destacaram sua superioridade em eficiência na maioria dos cenários avaliados.
+
+O desenvolvimento do modelo \textit{CBA} segue três etapas principais que envolvem a preparação dos dados, a geração de regras e a construção do classificador. Essas etapas são detalhadas a seguir:
+\begin{enumerate}
+    \item \textbf{Discretização de variáveis contínuas:} Dados contínuos são transformados em dados discretizados utilizando métodos como divisão por intervalos iguais, divisão por frequência igual, discretização baseada em entropia ou em estimativa de densidade de kernel \cite{liu2020}. Nesta etapa, o número adequado de intervalos deve ser definido para garantir entradas confiáveis.
+    \item \textbf{Geração de CARs:} As regras são criadas pelo algoritmo \textit{Apriori}, atendendo aos limites mínimos de suporte (\textit{minsup}) e confiança (\textit{minconf}) definidos pelo usuário.
+    \item \textbf{Poda e refinamento das CARs:} As regras são organizadas de acordo com critérios de precedência, que priorizam aquelas com maior confiança. Em caso de empates, regras com maior suporte são escolhidas, e, se necessário, utiliza-se a ordem de geração como critério final. Esse processo garante que as regras mais relevantes sejam selecionadas para compor o classificador final. As \textit{CARs} refinadas (\textit{pCARs}) são filtradas para formar o conjunto final de regras do classificador.
+\end{enumerate}
+
+O classificador final seleciona um conjunto de regras ordenadas para cobrir os dados de treinamento. Para novos casos, a primeira regra compatível com o caso é utilizada para classificá-lo; se nenhuma regra for aplicável, o caso é atribuído à classe padrão.
+
+Além de prever alvos em novos dados, o \textit{CBA} gera regras legíveis e compreensíveis, facilitando sua aplicação em contextos práticos e acadêmicos. Essas \textit{CARs} também têm potencial para pós-mineração de regras e descoberta de conhecimento, ampliando sua utilidade e contribuindo para insights adicionais sobre os dados analisados.
+
+\subsection{\textit{Isolation Forest}}
 
 O Isolation Forest é definido como um algoritmo de detecção de anomalias eficiente e independente de modelos, capaz de identificar amostras anômalas sem a necessidade de construir perfis detalhados dos dados \cite{chen2023}. Desenvolvido por Liu et al. (2008), o algoritmo utiliza árvores para isolar instâncias anômalas, baseando-se no comprimento médio do caminho entre os nós analisados e o nó raiz. Essa abordagem elimina a necessidade de cálculos de distância e densidade, aproveitando as características das anomalias — pontos raros e distintos — para separá-las rapidamente dos dados regulares, com eficiência temporal linear e baixo consumo de memória.
 
@@ -233,8 +262,6 @@ Como o Isolation Forest é uma técnica não supervisionada, são necessárias m
     \item \textbf{AUCPR (Área sob a Curva de Precisão-Revocação):} Analisa a relação entre precisão e revocação em diferentes limiares. É especialmente útil para conjuntos de dados desbalanceados devido à sua sensibilidade a verdadeiros positivos, falsos negativos e falsos positivos, ignorando os verdadeiros negativos.
 \end{itemize}
 
-A implementação binária composta do Isolation Forest apresenta desempenho equivalente ao da biblioteca Scikit-learn e oferece a vantagem de escalabilidade para grandes volumes de dados, integrando-se facilmente ao Apache Spark. Essa característica é essencial para processar grandes conjuntos de dados em contextos transacionais.
-
 \subsubsection{Etapas de Implementação}
 A implementação do Isolation Forest envolve três etapas principais: seleção de hiperparâmetros, treinamento do modelo e avaliação com métricas apropriadas.
 
@@ -244,14 +271,13 @@ Os dois hiperparâmetros principais do Isolation Forest são:
     \item \textbf{Número de Árvores:} Define a quantidade de árvores na floresta. Mais árvores podem aumentar a precisão na detecção de anomalias, mas também elevam a complexidade computacional.
     \item \textbf{Nível de Contaminação:} Representa a proporção estimada de anomalias no conjunto de dados. Esse parâmetro deve ser ajustado com validação cruzada ou conhecimento especializado para equilibrar precisão e revocação.
 \end{itemize}
-
 \subsubsection{Treinamento do Modelo}
 Após definir os hiperparâmetros, o modelo é treinado utilizando dados pré-processados \cite{meduri2024}. Durante o treinamento, as árvores de isolamento dividem o espaço de características aleatoriamente até isolar cada ponto de dado. Pontuações de anomalia são atribuídas com base no comprimento médio do caminho necessário para isolar cada ponto, sendo os valores mais altos associados a possíveis anomalias.
 
 \subsubsection{Seleção e Impacto do Limiar}
 O limiar de pontuação de anomalia diferencia dados normais de anômalos, afetando o equilíbrio entre precisão (capacidade de evitar falsos positivos) e revocação (capacidade de detectar a maioria das anomalias). Métodos avançados, como curvas ROC-AUC e métricas específicas, ajudam a selecionar limiares adequados considerando o desbalanceamento das classes e a eficácia do modelo.
 
-\subsubsection{Avaliação do Modelo}
+\subsubsection{Avaliação do Modelo com métricas apropriadas}
 A avaliação do modelo considera quatro métricas principais:
 \begin{enumerate}
     \item \textbf{Precisão:} Mede a proporção de anomalias corretamente identificadas entre todas as classificadas como anômalas.
@@ -312,7 +338,7 @@ Além disso, são incorporadas informações restritivas, como:
     \item Informações relacionadas a recuperação judicial, dívidas vencidas, cobranças amigáveis e registros de possíveis fraudes, fornecidas tanto pelos associados quanto pela própria CISP.
 \end{itemize}
 
-Com base nos dados enriquecidos, a CISP aplica um modelo de Score de crédito, que avalia o risco de performance dos clientes e atribui notas de A (excelente) a E (deficitário). Essa classificação oferece aos associados uma base objetiva para a tomada de decisões sobre concessão de crédito. Entretanto, o modelo atual não considera fatores adicionais relacionados ao risco de crédito, como alterações cadastrais frequentes ou aumentos atípicos no volume de compras. Essas informações são consolidadas em relatórios detalhados disponibilizados pela CISP e analisadas pelos tomadores de decisão, exclusivamente para a concessão de crédito a pessoas jurídicas.
+Com base nos dados enriquecidos, a CISP aplica um modelo de \textit{score} de crédito, que avalia o risco de performance dos clientes e atribui notas de A (excelente) a E (deficiente). Essa classificação oferece aos associados uma base objetiva para a tomada de decisões sobre concessão de crédito. Entretanto, o modelo atual não considera fatores adicionais relacionados ao risco de crédito, como alterações cadastrais frequentes ou aumentos atípicos no volume de compras. Essas informações são consolidadas em relatórios detalhados disponibilizados pela CISP e analisadas pelos tomadores de decisão, exclusivamente para a concessão de crédito a pessoas jurídicas.
 
 \subsubsection{Identificação de Padrões Comportamentais}
 
@@ -332,9 +358,8 @@ Essas discussões permitiram levantar hipóteses sobre padrões comportamentais 
 
 \subsubsection{Risco de Crédito e Impactos Financeiros}
 
-A base de dados da CISP, que totaliza aproximadamente 1,4 milhão de CNPJs ativos do mercado interno, estima-se que cerca de 15\% desses registros apresentem inadimplência severa, classificados como risco D ou E. Essas condições indicam dificuldades extremas, ou mesmo a impossibilidade, de recuperação dos valores devidos. Atualmente, não é possível mensurar com precisão quais desses casos configuram, de fato, golpes financeiros. Juntas, as dívidas desses CNPJs totalizam mais de R\$ 2,1 bilhões, representando um risco significativo para os associados.
+Na base de dados da CISP, que totaliza aproximadamente 1,4 milhão de CNPJs ativos do mercado interno, estima-se que cerca de 15\% dos registros apresentem inadimplência severa, classificados como risco D ou E. Essas condições indicam dificuldades extremas, ou mesmo a impossibilidade, de recuperação dos valores devidos. Atualmente, não é possível mensurar com precisão quais desses casos configuram, de fato, golpes financeiros. Juntas, as dívidas desses CNPJs totalizam mais de R\$ 2,1 bilhões, representando um risco significativo para os associados.
 
-\subsubsection{Conclusão}
 Nesta etapa, foi possível mapear e categorizar algumas hipóteses de golpes financeiros que afetam as indústrias associadas, além de compreender os potenciais benefícios do desenvolvimento de uma solução para identificá-los. Esse entendimento reforçou a importância de mitigar fraudes financeiras como meio de reduzir perdas, proteger os ativos das empresas e aprimorar a eficiência e segurança nos processos de concessão de crédito.
 
 
@@ -425,7 +450,7 @@ Após essas análises, colunas auxiliares foram removidas, mantendo o \textit{da
 
 Variáveis como \texttt{amountDebit} e \texttt{amountGreaterAccumulation} foram normalizadas com \texttt{np.log1p} para reduzir assimetrias e ajustadas em faixas categóricas (\textit{Very Low, Low, Medium, High}). A análise inicial mostrou distribuições equilibradas após a remoção de \textit{outliers} com base no \textit{Intervalo Interquartil} (IQR).
 
-A variável \texttt{default} foi criada a partir da classificação \texttt{rating}, indicando alto risco de inadimplência (\texttt{True}) para clientes com \texttt{rating} `d' ou `e'. Variáveis como \texttt{customer} e \texttt{updatedMonth} foram removidas por não contribuírem diretamente para a detecção de fraudes financeiras.
+A variável \texttt{default} foi criada a partir da classificação do \textit{score} de crédito, indicando alto risco de inadimplência (\texttt{True}) para clientes com \textit{score} de crédito `d' ou `e'. Variáveis como \texttt{customer} e \texttt{updatedMonth} foram removidas por não contribuírem diretamente para a detecção de fraudes financeiras.
 
 \subsubsection{Resultado Final}
 
@@ -447,7 +472,7 @@ A análise da coluna \texttt{anomaly} revelou a proporção de instâncias norma
 
 \subsection{Avaliação}
 
-Para realizar a avaliação do modelo, o \textit{Isolation Forest} gera predições que classificam as observações como normais (1) ou anomalias (-1). A comparação dessas predições com os rótulos verdadeiros (\texttt{true\_labels}) permite calcular métricas de desempenho, como precisão, \textit{recall}, acurácia e F1-Score. Contudo, como o \textit{dataset} original não possuía rótulos verdadeiros, optou-se por simular rótulos com base em regras de negócio e conhecimento do domínio, considerando a natureza e o contexto dos dados analisados.
+Para realizar a avaliação do modelo, o \textit{Isolation Forest} gera predições que classificam as observações como normais (1) ou anomalias (-1). A comparação dessas predições com os rótulos verdadeiros (\texttt{true\_labels}) permite calcular métricas de desempenho, como precisão, \textit{recall}, acurácia e F1-\textit{Score}. Contudo, como o \textit{dataset} original não possuía rótulos verdadeiros, optou-se por simular rótulos com base em regras de negócio e conhecimento do domínio, considerando a natureza e o contexto dos dados analisados.
 
 Existem várias técnicas para lidar com a ausência de rótulos, como a injeção de anomalias sintéticas ou a avaliação qualitativa das observações classificadas pelo modelo. Neste estudo, a simulação baseada em regras foi escolhida devido à familiaridade com o contexto do \textit{dataset} e à identificação de padrões consistentes em golpes financeiros observados na CISP.
 
@@ -465,15 +490,15 @@ Essas regras foram aplicadas como critérios para identificar anomalias no \text
 
 Com a aplicação da técnica, o modelo \textit{Isolation Forest} identificou 1.338 casos de anomalias no \textit{dataset}, indicando observações com padrões atípicos e potencialmente fraudulentos.
 
-\subsection{Implantação}
+\subsection{Implantação Futura}
 
-O modelo foi implementado através da criação de um serviço (API), que recebe os dados das solicitações e retorna uma classificação em tempo real. Esse modelo foi integrado ao sistema de motor de crédito atualmente disponibilizado pela CISP aos seus associados. Vale destacar que o fluxo de concessão de crédito descrito já está em operação com os associados, e a inclusão da consulta à API de detecção de golpes financeiros foi a principal novidade incorporada ao processo.
+O modelo será implementado através da criação de um serviço (API), que recebe os dados das solicitações e retorna uma classificação em tempo real. Esse modelo será integrado ao sistema de motor de crédito atualmente disponibilizado pela CISP aos seus associados. Vale destacar que o fluxo de concessão de crédito descrito já está em operação com os associados, e a inclusão da consulta à API de detecção de golpes financeiros será a principal novidade incorporada ao processo.
 
-A Figura~\ref{fig:fluxo_credito} ilustra o fluxo de concessão de crédito para os associados da CISP que utilizam o motor de crédito. Esse fluxo operacional segue as etapas descritas a seguir:
+A Figura~\ref{fig:fluxo_credito} ilustra o fluxo futuro de concessão de crédito para os associados da CISP que utilizam o motor de crédito. Esse fluxo operacional segue as etapas descritas a seguir:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{motordecredito.png}
+    \rotatebox{90}{\includegraphics[height=0.4\textheight]{diagrama.png}} % Ajusta para 90% da altura da página
     \caption{Fluxo de Concessão de Crédito Integrado com a API de Detecção de Golpes}
     \label{fig:fluxo_credito}
 \end{figure}
@@ -505,20 +530,20 @@ A Figura~\ref{fig:fluxo_credito} ilustra o fluxo de concessão de crédito para 
         Após a coleta das informações, o motor realiza o cálculo do risco de performance do cliente. Esse cálculo considera aspectos como histórico de crédito e a capacidade de pagamento do cliente.
 
         \item \textbf{Inclusão da Consulta à API de Detecção de Golpes:} 
-        Como novidade no processo, o motor de crédito agora consulta a API de detecção de golpes financeiros, que retorna um resultado indicando se a transação é caracterizada como um possível golpe financeiro ou não.
+        Como novidade no processo, o motor de crédito consultará a API de detecção de golpes financeiros, que retorna um resultado indicando se a transação é caracterizada como um possível golpe financeiro ou não.
     \end{itemize}
 
     \item \textbf{Tomada de Decisão:} 
     Após a conclusão da análise de risco e a verificação contra golpes financeiros, o motor de crédito aplica as regras de tomada de decisão, conforme configurado na política de crédito da empresa associada.
     \begin{itemize}
-        \item \textit{Exemplo:} Se o cliente possui uma classificação de rating "boa" e uma alta probabilidade de golpe financeiro, o sistema analisa os critérios de recusa contidos na política de crédito do associado e toma uma decisão automatizada.
+        \item \textit{Exemplo:} Se o cliente possui uma classificação de \textit{score} de crédito "boa" e uma alta probabilidade de golpe financeiro, o sistema analisa os critérios de recusa contidos na política de crédito do associado e toma uma decisão automatizada.
     \end{itemize}
 
     \item \textbf{Geração do Dossiê:} 
     Toda decisão é acompanhada por um dossiê, que reúne diversas informações e relatórios para garantir transparência e rastreabilidade do processo. Esse dossiê inclui dados coletados, resultados das análises e as justificativas para a decisão final.
 \end{enumerate}
 
-O fluxo de concessão de crédito já existente nos associados da CISP foi aprimorado com a inclusão da API de detecção de golpes financeiros, adicionando uma camada adicional de proteção contra fraudes. Essa integração não apenas reforçou a gestão de riscos, mas também contribuiu para maior agilidade e precisão nas decisões de crédito automatizadas.
+O fluxo de concessão de crédito já existente nos associados da CISP será aprimorado com a inclusão da API de detecção de golpes financeiros, adicionando uma camada adicional de proteção contra fraudes. Essa integração não apenas reforçará a gestão de riscos, mas também contribuirá para maior agilidade e precisão nas decisões de crédito automatizadas.
 
 % REFERÊNCIAS
 \newpage
