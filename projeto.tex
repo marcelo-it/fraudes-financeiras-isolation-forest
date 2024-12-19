@@ -452,8 +452,7 @@ Variáveis como \texttt{amountDebit} e \texttt{amountGreaterAccumulation} foram 
 
 A variável \texttt{default} foi criada a partir da classificação do \textit{score} de crédito, indicando alto risco de inadimplência (\texttt{True}) para clientes com \textit{score} de crédito `d' ou `e'. Variáveis como \texttt{customer} e \texttt{updatedMonth} foram removidas por não contribuírem diretamente para a detecção de fraudes financeiras.
 
-\subsubsection{Resultado Final}
-
+\subsubsection{\textit{Dataset} Final}
 Após a preparação, o \textit{dataset} final foi composto pelas seguintes variáveis relevantes, otimizadas para aplicação no modelo \textit{Isolation Forest}, garantindo eficiência na detecção de fraudes financeiras.
 
 
@@ -461,94 +460,235 @@ Essas etapas resultaram em um \textit{dataset} robusto, focado em variáveis rel
 
 
 \subsection{Modelagem}
-
-O estudo utilizou o algoritmo \textit{Isolation Forest}, da biblioteca \textit{Scikit-learn}, para detectar golpes financeiros em operações de crédito realizadas por indústrias de bens de consumo. Esse modelo foi escolhido devido à sua eficiência na identificação de anomalias em grandes volumes de dados, utilizando o conceito de isolamento, onde instâncias anômalas são mais facilmente identificadas em razão de seu comportamento atípico em relação à maioria dos dados.
-
-A implementação do modelo foi precedida por uma preparação rigorosa dos dados, com etapas de normalização, categorização e remoção de \textit{outliers}, garantindo a consistência e a qualidade necessárias para o treinamento. Para transformar variáveis categóricas e booleanas em um formato numérico adequado, foi aplicado o \textit{One-Hot Encoding} utilizando a função \texttt{pd.get\_dummies} da biblioteca Pandas. Esse processo converteu variáveis categóricas em múltiplas colunas binárias, permitindo que o modelo processasse as informações sem introduzir hierarquias artificiais. As variáveis transformadas incluíram aspectos como estado do cliente, alterações cadastrais, alertas e classificações de risco, destacando a variável \texttt{riskFoundation}, que foi codificada em colunas independentes como \texttt{riskFoundation\_High}, \texttt{riskFoundation\_Moderate} e \texttt{riskFoundation\_Low}.
-
-O \textit{Isolation Forest} foi configurado com uma taxa de contaminação de 5\%, que define a proporção esperada de anomalias, e o parâmetro \texttt{random\_state=42} para garantir a reprodutibilidade dos resultados. O modelo foi treinado com o método \texttt{fit}, ajustando-se aos padrões dos dados para identificar instâncias normais e anômalas. Após o treinamento, o método \texttt{predict} classificou cada instância do \textit{dataset}, gerando previsões armazenadas na nova coluna \texttt{anomaly}, onde 1 indica instâncias normais e -1 aponta anomalias.
-
-A análise da coluna \texttt{anomaly} revelou a proporção de instâncias normais e anômalas, permitindo uma visão inicial da distribuição de anomalias no \textit{dataset}. Essa abordagem demonstrou-se eficiente para identificar comportamentos atípicos, contribuindo para a detecção de fraudes financeiras em operações de crédito. A integração de um processo robusto de preparação dos dados com o treinamento do modelo destacou o \textit{Isolation Forest} como uma ferramenta escalável e eficaz para mitigação de riscos financeiros.
-
-\subsection{Avaliação}
-
-Para realizar a avaliação do modelo, o \textit{Isolation Forest} gera predições que classificam as observações como normais (1) ou anomalias (-1). A comparação dessas predições com os rótulos verdadeiros (\texttt{true\_labels}) permite calcular métricas de desempenho, como precisão, \textit{recall}, acurácia e F1-\textit{Score}. Contudo, como o \textit{dataset} original não possuía rótulos verdadeiros, optou-se por simular rótulos com base em regras de negócio e conhecimento do domínio, considerando a natureza e o contexto dos dados analisados.
-
-Existem várias técnicas para lidar com a ausência de rótulos, como a injeção de anomalias sintéticas ou a avaliação qualitativa das observações classificadas pelo modelo. Neste estudo, a simulação baseada em regras foi escolhida devido à familiaridade com o contexto do \textit{dataset} e à identificação de padrões consistentes em golpes financeiros observados na CISP.
-
-Com base em regras de negócio, foi criada a variável \texttt{true\_labels} no \textit{dataset}, fundamentada em características recorrentes identificadas em casos reais de fraudes financeiras. As principais características observadas foram:
+\subsubsection{Modelagem com o CBA}
+O estudo iniciou com a aplica\c{c}\~{a}o do modelo CBA (Classification Based on Associations), um m\'etodo de aprendizado supervisionado que combina classifica\c{c}\~{a}o e minera\c{c}\~{a}o de regras de associa\c{c}\~{a}o. O CBA foi escolhido pela capacidade de gerar regras interpret\'aveis, facilitando a compreens\~{a}o dos padr\~{o}es associados \`a fraude financeira.
 
 \begin{enumerate}
-    \item \textbf{Crescimento Atípico no Volume de Compras:} Representado pelas variáveis \texttt{quantityGreaterAccumulationAlert} e \texttt{quantityDebitAlert}, que assumem o valor \texttt{True} em situações de comportamento anômalo, como um aumento significativo e incomum no volume de compras.
+    \item \textbf{Constru\c{c}\~{a}o da Vari\'avel Alvo}
+    
+    A vari\'avel \textit{default} foi criada a partir da coluna \textit{rating}, em que registros com valores \textit{'d'} ou \textit{'e'} foram classificados como \textbf{True} (risco de fraude), e os demais como \textbf{False}. A coluna original foi exclu\'ida para simplifica\c{c}\~{a}o do conjunto de dados.
 
-    \item \textbf{Aumento no Comportamento de Consultas:} A variável \texttt{queriesIncreaseAlert}, que sinaliza \texttt{True} quando há um aumento expressivo no número de consultas realizadas, comportamento frequentemente associado a tentativas de golpe.
+    \item \textbf{Resultados do Modelo}
+    
+    O modelo gerou um conjunto de regras de associa\c{c}\~{a}o com confian\c{c}a e \textit{lift} iguais a 1.0, identificando padr\~{o}es \textit{\'obvios}, como:
+    \begin{itemize}
+        \item \textbf{statusActive\_True} (suporte: 81,51\%)
+        \item \textbf{nameChanged\_False} (suporte: 99,39\%)
+        \item \textbf{emailChanged\_False} (suporte: 92,43\%)
+    \end{itemize}
 
-    \item \textbf{Inconsistência no Tempo de Atividade vs. Data de Fundação:} Alguns CNPJs permaneceram inativos por longos períodos e foram posteriormente reativados sem histórico de relacionamento com indústrias, um comportamento típico em golpes financeiros. Essa característica é representada pela variável \texttt{riskFoundation}, com o valor \texttt{high}.
+    Apesar das correla\c{c}\~{o}es identificadas, o modelo n\~{a}o foi capaz de capturar a complexidade real das fraudes, sendo prejudicado pelo desbalanceamento severo das classes (93,18\% \textbf{False} e 6,82\% \textbf{True}).
 \end{enumerate}
 
-Essas regras foram aplicadas como critérios para identificar anomalias no \textit{dataset}, resultando na criação de uma base de rótulos (\texttt{true\_labels}) consistente e alinhada ao conhecimento de domínio para a detecção de fraudes financeiras.
 
-Com a aplicação da técnica, o modelo \textit{Isolation Forest} identificou 1.338 casos de anomalias no \textit{dataset}, indicando observações com padrões atípicos e potencialmente fraudulentos.
+\subsubsection{Modelagem com o Isolation Forest}
 
-\subsection{Implantação Futura}
+Devido \`as limita\c{c}\~{o}es da aplicabilidade do CBA ao dataset, foi adotado o paradigma de detec\c{c}\~{a}o de anomalias utilizando o Isolation Forest, da biblioteca Scikit-learn. O Isolation Forest foi escolhido pela sua capacidade de identificar padr\~{o}es at\'ipicos em grandes volumes de dados, sendo insens\'ivel ao desbalanceamento das classes.
 
-O modelo será implementado através da criação de um serviço (API), que recebe os dados das solicitações e retorna uma classificação em tempo real. Esse modelo será integrado ao sistema de motor de crédito atualmente disponibilizado pela CISP aos seus associados. Vale destacar que o fluxo de concessão de crédito descrito já está em operação com os associados, e a inclusão da consulta à API de detecção de golpes financeiros será a principal novidade incorporada ao processo.
+\begin{enumerate}
+    \item \textbf{Prepara\c{c}\~{a}o dos Dados}
+    \begin{itemize}
+        \item \textbf{Normaliza\c{c}\~{a}o}: Padroniza\c{c}\~{a}o das vari\'aveis para manter consist\^encia de escala.
+        \item \textbf{Remo\c{c}\~{a}o de Outliers}: Exclus\~{a}o de valores extremos que poderiam distorcer o modelo.
+        \item \textbf{Transforma\c{c}\~{a}o de Vari\'aveis}: Aplica\c{c}\~{a}o do One-Hot Encoding para converter vari\'aveis categ\'oricas em formato num\'erico. Vari\'aveis transformadas inclu\'iram altera\c{c}\~{o}es cadastrais, alertas, estado do cliente e \textit{riskFoundation} (codificada em \textit{High}, \textit{Moderate} e \textit{Low}).
+    \end{itemize}
 
-A Figura~\ref{fig:fluxo_credito} ilustra o fluxo futuro de concessão de crédito para os associados da CISP que utilizam o motor de crédito. Esse fluxo operacional segue as etapas descritas a seguir:
+    \item \textbf{Configura\c{c}\~{a}o Inicial do Modelo}
+    \begin{itemize}
+        \item \textbf{Taxa de Contamina\c{c}\~{a}o}: 5\% (\texttt{contamination=0.05}).
+        \item \textbf{Random State}: 42, garantindo reprodutibilidade.
+    \end{itemize}
+
+    Ap\'os o primeiro processamento, os resultados foram avaliados utilizando as m\'etricas \textbf{Precis\~{a}o}, \textbf{Recall} e \textbf{F1-Score}:
+    \begin{itemize}
+        \item \textbf{Precis\~{a}o}: 0.0225
+        \item \textbf{Recall}: 0.2238
+        \item \textbf{F1-Score}: 0.0408
+    \end{itemize}
+
+    \item \textbf{Ajuste de Par\^ametros com Cross-Validation}
+    Para aprimorar o desempenho do modelo Isolation Forest, foi aplicada a t\'ecnica de Cross-Validation, buscando os melhores par\^ametros para otimiza\c{c}\~{a}o. Os resultados do processo foram:
+    \begin{itemize}
+        \item \textbf{Melhores Par\^ametros}:
+        \begin{itemize}
+            \item \texttt{contamination}: 0.01
+            \item \texttt{max\_samples}: 0.6
+            \item \texttt{n\_estimators}: 100
+        \end{itemize}
+        \item \textbf{Melhor F1-Score}: 0.0337
+    \end{itemize}
+
+    \textbf{Interpreta\c{c}\~{a}o:} Apesar do ajuste fino dos hiperpar\^ametros, o F1-Score final apresentou uma leve redu\c{c}\~{a}o em compara\c{c}\~{a}o ao processamento inicial (0.0408 para 0.0337). Esse comportamento pode ser atribuído \`a tentativa de ajustar a taxa de contamina\c{c}\~{a}o para reduzir falsos positivos, o que afetou o equil\'ibrio entre precis\~{a}o e recall.
+
+    \item \textbf{An\'alise Comparativa}
+    \begin{enumerate}
+        \item \textbf{Modelo CBA}:
+        \begin{itemize}
+            \item \textbf{Desempenho}: Baixo, com identifica\c{c}\~{a}o de padr\~{o}es triviais e sensibilidade ao desbalanceamento.
+        \end{itemize}
+        \item \textbf{Isolation Forest}:
+        \begin{itemize}
+            \item \textbf{Desempenho Inicial}: Melhor capacidade de identificar fraudes, mas com baixa precis\~{a}o e F1-Score limitado devido ao grande n\'umero de falsos positivos.
+            \item \textbf{Desempenho Ajustado}: Ap\'os a aplica\c{c}\~{a}o da cross-validation, os par\^ametros otimizados n\~{a}o proporcionaram um ganho significativo no F1-Score, indicando que a natureza do problema (fraudes esparsas e complexas) pode exigir abordagens adicionais.
+        \end{itemize}
+    \end{enumerate}
+
+    \item \textbf{Propostas de Melhorias}
+    \begin{enumerate}
+        \item \textbf{Modelos H\'ibridos}: Integrar m\'etodos de detec\c{c}\~{a}o de anomalias (Isolation Forest) com modelos supervisionados, como Random Forest ou XGBoost, para combinar as vantagens dos dois paradigmas.
+        \item \textbf{Redu\c{c}\~{a}o de Falsos Positivos}: Ajustar a taxa de contamina\c{c}\~{a}o de forma din\^amica ou aplicar p\'os-processamento para filtrar anomalias irrelevantes.
+        \item \textbf{Valida\c{c}\~{a}o Especializada}: Submeter os registros classificados como an\^omalos \`a valida\c{c}\~{a}o com especialistas, a fim de confirmar sua rela\c{c}\~{a}o com fraudes reais.
+        \item \textbf{Balanceamento dos Dados}: Aplicar t\'ecnicas como SMOTE no conjunto de dados inicial para treinar modelos supervisionados que lidem melhor com a classe minorit\'aria.
+    \end{enumerate}
+\end{enumerate}
+
+A etapa de modelagem evidenciou as limita\c{c}\~{o}es do modelo CBA na detec\c{c}\~{a}o de fraudes em dados desbalanceados e a maior efici\^encia do Isolation Forest na identifica\c{c}\~{a}o de comportamentos at\'ipicos. Apesar do ajuste dos hiperpar\^ametros com cross-validation, o modelo apresentou um F1-Score de 0.0337, sugerindo a necessidade de abordagens complementares para aumentar o desempenho.
+
+Os pr\'oximos passos incluem a valida\c{c}\~{a}o pr\'atica das anomalias detectadas, a implementa\c{c}\~{a}o de modelos h\'ibridos e o refinamento de t\'ecnicas para redu\c{c}\~{a}o de falsos positivos e melhoria do equil\'ibrio entre precis\~{a}o e recall.
+
+\subsection{Avalia\c{c}\~{a}o}
+
+Para realizar a avalia\c{c}\~{a}o do modelo, o Isolation Forest gera predi\c{c}\~{o}es que classificam as observa\c{c}\~{o}es como normais (1) ou anomalias (-1). A compara\c{c}\~{a}o dessas predi\c{c}\~{o}es com os r\'otulos verdadeiros (\textit{true\_labels}) permite calcular m\'etricas de desempenho, como precis\~{a}o, recall, acur\'acia e F1-Score. Contudo, como o dataset original n\~{a}o possu\'ia r\'otulos verdadeiros, optou-se por simular r\'otulos com base em regras de neg\'ocio e conhecimento do dom\'inio, considerando a natureza e o contexto dos dados analisados.
+
+Existem v\'arias t\'ecnicas para lidar com a aus\^encia de r\'otulos, como a inje\c{c}\~{a}o de anomalias sint\'eticas ou a avalia\c{c}\~{a}o qualitativa das observa\c{c}\~{o}es classificadas pelo modelo. Neste estudo, a simula\c{c}\~{a}o baseada em regras foi escolhida devido \`a familiaridade com o contexto do dataset e \`a identifica\c{c}\~{a}o de padr\~{o}es consistentes em golpes financeiros observados na CISP.
+
+Com base em regras de neg\'ocio, foi criada a vari\'avel \textit{true\_labels} no dataset, fundamentada em caracter\'isticas recorrentes identificadas em casos reais de fraudes financeiras. As principais caracter\'isticas observadas foram:
+\begin{enumerate}
+    \item \textbf{Crescimento At\'ipico no Volume de Compras}: Representado pelas vari\'aveis \textit{quantityGreaterAccumulationAlert} e \textit{quantityDebitAlert}, que assumem o valor \textbf{True} em situa\c{c}\~{o}es de comportamento an\^omalo, como um aumento significativo e incomum no volume de compras.
+    \item \textbf{Aumento no Comportamento de Consultas}: Identificado pela vari\'avel \textit{queriesIncreaseAlert}, que sinaliza \textbf{True} quando h\'a um aumento expressivo no n\'umero de consultas realizadas, comportamento frequentemente associado a tentativas de golpe.
+    \item \textbf{Inconsist\^encia no Tempo de Atividade vs. Data de Funda\c{c}\~{a}o}: Alguns CNPJs permaneceram inativos por longos per\'iodos e foram posteriormente reativados sem hist\'orico de relacionamento com ind\'ustrias, um comportamento t\'ipico em golpes financeiros. Essa caracter\'istica \'e representada pela vari\'avel \textit{riskFoundation}, com o valor \textit{high}.
+\end{enumerate}
+
+Essas regras foram aplicadas como crit\'erios para identificar anomalias no dataset, resultando na cria\c{c}\~{a}o de uma base de r\'otulos (\textit{true\_labels}) consistente e alinhada ao conhecimento de dom\'inio para a detec\c{c}\~{a}o de fraudes financeiras.
+
+Com a aplica\c{c}\~{a}o da t\'ecnica, o modelo Isolation Forest identificou 1.338 casos de anomalias no dataset, indicando observa\c{c}\~{o}es com padr\~{o}es at\'ipicos e potencialmente fraudulentos.
+
+\subsection{Implanta\c{c}\~{a}o}
+
+O modelo ser\'a implementado atrav\'es da cria\c{c}\~{a}o de um servi\c{c}o (API), que recebe os dados das solicita\c{c}\~{o}es e retorna uma classifica\c{c}\~{a}o em tempo real. Esse modelo ser\'a integrado ao sistema de motor de cr\'edito atualmente disponibilizado pela CISP aos seus associados. Vale destacar que o fluxo de concess\~{a}o de cr\'edito descrito j\'a est\'a em opera\c{c}\~{a}o com os associados, e a inclus\~{a}o da consulta \`a API de detec\c{c}\~{a}o de golpes financeiros ser\'a a principal novidade incorporada ao processo.
+
+A Figura abaixo ilustra o fluxo futuro de concess\~{a}o de cr\'edito para os associados da CISP que utilizam o motor de cr\'edito. Esse fluxo operacional segue as etapas descritas a seguir:
 
 \begin{figure}[H]
     \centering
-    \rotatebox{90}{\includegraphics[height=0.4\textheight]{diagrama.png}} % Ajusta para 90% da altura da página
-    \caption{Fluxo de Concessão de Crédito Integrado com a API de Detecção de Golpes}
-    \label{fig:fluxo_credito}
+    \includegraphics[angle=90, width=0.4\textheight]{diagrama.png}
+    \caption{Exemplo de imagem rotacionada ocupando grande parte da p\'agina.}
+    \label{fig:imagem_rotacionada}
 \end{figure}
 
 
+
 \begin{enumerate}
-    \item \textbf{Identificação do Cliente:} 
-    Inicialmente, o cliente do associado é identificado como sendo um novo cliente (sem histórico de movimentações com o associado) ou um cliente ativo (com histórico de transações anteriores). O cliente, então, realiza uma solicitação de compra junto ao associado.
+    \item \textbf{Identifica\c{c}\~{a}o do Cliente}
+    Inicialmente, o cliente do associado \'{e} identificado como sendo um novo cliente (sem hist\'orico de movimenta\c{c}\~{o}es com o associado) ou um cliente ativo (com hist\'orico de transa\c{c}\~{o}es anteriores). O cliente, ent\~{a}o, realiza uma solicita\c{c}\~{a}o de compra junto ao associado.
 
-    \item \textbf{Consulta Inicial ao ERP:}
-    O sistema CRM do associado envia a solicitação ao ERP para verificar se o cliente possui crédito disponível.
+    \item \textbf{Consulta Inicial ao ERP}
+    O sistema CRM do associado envia a solicita\c{c}\~{a}o ao ERP para verificar se o cliente possui cr\'edito dispon\'ivel.
     \begin{itemize}
-        \item \textbf{Caso tenha crédito suficiente e em vigência:} O pedido de compra é aprovado automaticamente, e o cliente é comunicado.
-        \item \textbf{Caso não tenha crédito:} Se o crédito estiver expirado, comprometido ou insuficiente, o ERP encaminha a solicitação ao motor de crédito da CISP para realização de uma análise detalhada.
+        \item Caso tenha cr\'edito suficiente e em vig\^{e}ncia: O pedido de compra \'{e} aprovado automaticamente, e o cliente \'{e} comunicado.
+        \item Caso n\~{a}o tenha cr\'edito: Se o cr\'edito estiver expirado, comprometido ou insuficiente, o ERP encaminha a solicita\c{c}\~{a}o ao motor de cr\'edito da CISP para realiza\c{c}\~{a}o de uma an\'alise detalhada.
     \end{itemize}
 
-    \item \textbf{Análise pelo Motor de Crédito da CISP:}
-    O motor de crédito da CISP contém todas as regras personalizadas para executar a análise de crédito, de acordo com a política de crédito da empresa associada. O fluxo de análise segue as etapas abaixo:
+    \item \textbf{An\'alise pelo Motor de Cr\'edito da CISP}
+    O motor de cr\'edito da CISP cont\'em todas as regras personalizadas para executar a an\'alise de cr\'edito, de acordo com a pol\'itica de cr\'edito da empresa associada. O fluxo de an\'alise segue as etapas abaixo:
     \begin{itemize}
-        \item \textbf{Consulta às Fontes de Informação:}
-        O motor consulta diversas bases de dados, incluindo:
+        \item \textbf{Consulta \`as Fontes de Informa\c{c}\~{a}o}: O motor consulta diversas bases de dados, incluindo:
         \begin{itemize}
-            \item Dados cadastrais em fontes públicas;
-            \item Outras informações definidas previamente pela empresa.
+            \item Dados cadastrais em fontes p\'ublicas.
+            \item Outras informa\c{c}\~{o}es definidas previamente pela empresa.
         \end{itemize}
-        Como parte das boas práticas de gestão de risco de crédito, as configurações dessas fontes e políticas devem ser alinhadas às diretrizes da política de crédito da empresa.
-
-        \item \textbf{Cálculo do Risco de Performance:} 
-        Após a coleta das informações, o motor realiza o cálculo do risco de performance do cliente. Esse cálculo considera aspectos como histórico de crédito e a capacidade de pagamento do cliente.
-
-        \item \textbf{Inclusão da Consulta à API de Detecção de Golpes:} 
-        Como novidade no processo, o motor de crédito consultará a API de detecção de golpes financeiros, que retorna um resultado indicando se a transação é caracterizada como um possível golpe financeiro ou não.
+        Como parte das boas pr\'aticas de gest\~{a}o de risco de cr\'edito, as configura\c{c}\~{o}es dessas fontes e pol\'iticas devem ser alinhadas \`as diretrizes da pol\'itica de cr\'edito da empresa.
+        \item \textbf{C\'alculo do Risco de Performance}: Ap\'os a coleta das informa\c{c}\~{o}es, o motor realiza o c\'alculo do risco de performance do cliente. Esse c\'alculo considera aspectos como hist\'orico de cr\'edito e a capacidade de pagamento do cliente.
+        \item \textbf{Inclus\~{a}o da Consulta \`a API de Detec\c{c}\~{a}o de Golpes}: Como novidade no processo, o motor de cr\'edito agora consulta a API de detec\c{c}\~{a}o de golpes financeiros, que retorna um resultado indicando se a transa\c{c}\~{a}o \'{e} caracterizada como um poss\'ivel golpe financeiro ou n\~{a}o.
     \end{itemize}
 
-    \item \textbf{Tomada de Decisão:} 
-    Após a conclusão da análise de risco e a verificação contra golpes financeiros, o motor de crédito aplica as regras de tomada de decisão, conforme configurado na política de crédito da empresa associada.
+    \item \textbf{Tomada de Decis\~{a}o}
+    Ap\'os a conclus\~{a}o da an\'alise de risco e a verifica\c{c}\~{a}o contra golpes financeiros, o motor de cr\'edito aplica as regras de tomada de decis\~{a}o, conforme configurado na pol\'itica de cr\'edito da empresa associada.
     \begin{itemize}
-        \item \textit{Exemplo:} Se o cliente possui uma classificação de \textit{score} de crédito "boa" e uma alta probabilidade de golpe financeiro, o sistema analisa os critérios de recusa contidos na política de crédito do associado e toma uma decisão automatizada.
+        \item \textbf{Exemplo}: Se o cliente possui uma classifica\c{c}\~{a}o de rating "boa" e uma alta probabilidade de golpe financeiro, o sistema analisa os crit\'erios de recusa contidos na pol\'itica de cr\'edito do associado e toma uma decis\~{a}o automatizada.
     \end{itemize}
 
-    \item \textbf{Geração do Dossiê:} 
-    Toda decisão é acompanhada por um dossiê, que reúne diversas informações e relatórios para garantir transparência e rastreabilidade do processo. Esse dossiê inclui dados coletados, resultados das análises e as justificativas para a decisão final.
+    \item \textbf{Gera\c{c}\~{a}o do Dossi\^e}
+    Toda decis\~{a}o \'{e} acompanhada por um dossi\^e, que re\'une diversas informa\c{c}\~{o}es e relat\'orios para garantir transpar\^{e}ncia e rastreabilidade do processo. Esse dossi\^e inclui dados coletados, resultados das an\'alises e as justificativas para a decis\~{a}o final.
 \end{enumerate}
 
-O fluxo de concessão de crédito já existente nos associados da CISP será aprimorado com a inclusão da API de detecção de golpes financeiros, adicionando uma camada adicional de proteção contra fraudes. Essa integração não apenas reforçará a gestão de riscos, mas também contribuirá para maior agilidade e precisão nas decisões de crédito automatizadas.
+O fluxo de concess\~{a}o de cr\'edito j\'a existente nos associados da CISP ser\'a aprimorado com a inclus\~{a}o da API de detec\c{c}\~{a}o de golpes financeiros, adicionando uma camada de prote\c{c}\~{a}o contra fraudes. Essa integra\c{c}\~{a}o n\~{a}o apenas refor\c{c}ar\'a a gest\~{a}o de riscos, mas tamb\'em contribuir\'a para maior agilidade e precis\~{a}o nas decis\~{o}es de cr\'edito automatizadas.
+
+
+
+\section{CONCLUSÃO}
+\subsection{Objetivos do Estudo}
+
+O objetivo do estudo foi validar um modelo de intelig\^{e}ncia artificial para identificar golpes financeiros na concess\~{a}o de cr\'edito, que n\~{a}o est\~{a}o presentes no modelo de score de cr\'edito atualmente desenvolvido pela empresa, e implementar esse modelo no motor de cr\'edito. 
+
+A implementa\c{c}\~{a}o do algoritmo CBA (Classification Based Associations), que \'{e} um algoritmo supervisionado e atua no paradigma de classifica\c{c}\~{a}o, n\~{a}o obteve resultados satisfat\'orios devido \`as caracter\'{\i}sticas do dataset, que \'{e} desbalanceado, ou seja, possui poucas classes que possam identificar golpes financeiros. Existem t\'ecnicas diversas que podem ser implementadas para tentar balancear o dataset e encontrar poss\'{\i}veis sinais de golpes financeiros. 
+
+Contudo, como conclus\~{a}o, o paradigma de classifica\c{c}\~{a}o n\~{a}o se aplica ao objetivo do estudo, que \'{e} a identifica\c{c}\~{a}o de golpes financeiros. O modelo CBA trouxe, atrav\'es da sua aplica\c{c}\~{a}o, uma vertente interessante para identificar quais regras (antecessores e predecessores) podem ser \'{u}teis para compreender quais fatores realmente influenciam diretamente os golpes financeiros. Vale ressaltar que o modelo CBA \'{e} supervisionado, ou seja, depende da exist\^{e}ncia de uma vari\'{a}vel target, que, no estudo, foi criada com base na utiliza\c{c}\~{a}o da vari\'{a}vel score de cr\'edito. Os valores \textit{D} e \textit{E}, que identificam inadimpl\^{e}ncia alta, foram selecionados, mas n\~{a}o caracterizam necessariamente um golpe financeiro, o que pode ser uma limita\c{c}\~{a}o do dataset e influenciar no resultado final do estudo.
+
+O estudo evoluiu para a utiliza\c{c}\~{a}o de outra t\'ecnica ou paradigma: a detec\c{c}\~{a}o de anomalias. Esse paradigma foi escolhido devido ao fato de o dataset apresentar poucos registros discrepantes. A aplica\c{c}\~{a}o do modelo Isolation Forest, que \'{e} n\~{a}o supervisionado e n\~{a}o depende da cria\c{c}\~{a}o de uma vari\'{a}vel target, mostrou-se mais promissora, mesmo possuindo m\'etricas de avalia\c{c}\~{a}o a serem melhoradas. 
+
+Ap\'os a busca por otimizar os par\^ametros do algoritmo, o pr\'{o}ximo passo ser\'{a} a aplica\c{c}\~{a}o de t\'ecnicas para melhorar as m\'etricas de avalia\c{c}\~{a}o, incluindo a sele\c{c}\~{a}o de vari\'{a}veis. Com isso, espera-se que o modelo Isolation Forest possa ser avaliado e apresentar m\'etricas aceit\'aveis para utiliza\c{c}\~{a}o.
+
+\subsection{Contribui\c{c}\~{o}es T\'ecnicas}
+\subsubsection{Avalia\c{c}\~{a}o Cr\'itica do Paradigma de Classifica\c{c}\~{a}o com o CBA}
+- O estudo implementou o algoritmo \textbf{CBA (Classification Based Associations)}, que utiliza um paradigma supervisionado para identificar golpes financeiros na concess\~{a}o de cr\'edito. Essa abordagem, baseada em classifica\c{c}\~{a}o, mostrou-se inadequada devido \`as caracter\'{\i}sticas espec\'{\i}ficas do dataset, como o desbalanceamento severo entre classes e a depend\^{e}ncia de uma vari\'{a}vel target para treinar o modelo.
+- Apesar disso, a aplica\c{c}\~{a}o do CBA permitiu identificar regras associativas (antecessores e predecessores) que influenciam diretamente os golpes financeiros. Essas regras oferecem insights valiosos para a constru\c{c}\~{a}o de modelos futuros e compreens\~{a}o dos fatores subjacentes aos golpes.
+
+\subsubsection{Transi\c{c}\~{a}o para Detec\c{c}\~{a}o de Anomalias com Isolation Forest}
+- Ap\'os a an\'alise das limita\c{c}\~{o}es do paradigma de classifica\c{c}\~{a}o, o estudo avan\c{c}ou para o paradigma de detec\c{c}\~{a}o de anomalias. A implementa\c{c}\~{a}o do modelo \textbf{Isolation Forest}, que \'{e} n\~{a}o supervisionado, eliminou a necessidade de cria\c{c}\~{a}o de uma vari\'{a}vel target, sendo mais apropriado para lidar com datasets desbalanceados e esparsos.
+- O modelo demonstrou ser promissor, mesmo com m\'etricas de avalia\c{c}\~{a}o iniciais ainda pass\'{\i}veis de melhorias. Essa transi\c{c}\~{a}o representou uma adapta\c{c}\~{a}o significativa para atender aos desafios apresentados pelo dataset.
+
+\subsubsection{Identifica\c{c}\~{a}o e Abordagem de Limita\c{c}\~{o}es do Dataset}
+- O estudo reconheceu as limita\c{c}\~{o}es do dataset utilizado, como a aus\^{e}ncia de registros rotulados como golpes financeiros e a predomin\^ancia de classes majorit\'arias. Essas caracter\'{\i}sticas dificultam a aplica\c{c}\~{a}o de t\'ecnicas tradicionais de classifica\c{c}\~{a}o.
+- Foram exploradas possibilidades de balanceamento e otimiza\c{c}\~{a}o do dataset, com foco na cria\c{c}\~{a}o de vari\'{a}veis mais representativas e robustas para capturar sinais de anomalias e fraudes.
+
+\subsubsection{Planejamento de Melhorias Futuras}
+- O estudo prop\^os estrat\'egias claras para aprimorar o desempenho do modelo Isolation Forest, como a sele\c{c}\~{a}o de vari\'{a}veis mais relevantes e a aplica\c{c}\~{a}o de t\'ecnicas de otimiza\c{c}\~{a}o de par\^ametros.
+- Foi destacado o pr\'oximo passo de avalia\c{c}\~{a}o do modelo com m\'etricas mais robustas e ajustadas para uso pr\'atico no motor de cr\'edito da empresa.
+
+\subsection{Contribui\c{c}\~{o}es para a Comunidade Cient\'ifica}
+
+\subsubsection{Inova\c{c}\~{a}o na Detec\c{c}\~{a}o de Fraudes em Modelos de Cr\'edito}
+- A an\'alise revelou que, embora os paradigmas de classifica\c{c}\~{a}o sejam amplamente utilizados, sua aplica\c{c}\~{a}o pode ser inadequada em contextos de fraudes financeiras devido ao desbalanceamento dos dados. Essa conclus\~{a}o contribui para a comunidade cient\'{\i}fica ao demonstrar os limites do uso de algoritmos supervisionados, como o CBA, em problemas com dados esparsos.
+
+\subsubsection{Valida\c{c}\~{a}o de Abordagens N\~{a}o Supervisionadas em Dados Desbalanceados}
+- A ado\c{c}\~{a}o do \textbf{Isolation Forest} como paradigma alternativo para detec\c{c}\~{a}o de golpes financeiros oferece uma abordagem inovadora que n\~{a}o depende de vari\'{a}veis target. Essa t\'ecnica refor\c{c}a a viabilidade de m\'etodos n\~{a}o supervisionados para problemas de fraude e pode inspirar novos estudos que explorem cen\'arios similares.
+
+\subsubsection{Base de Conhecimento sobre Regras Associativas em Fraudes}
+- A aplica\c{c}\~{a}o do CBA, embora limitada para o objetivo final, gerou um conjunto de regras interpret\'aveis que podem ser aproveitadas em futuros estudos e implementa\c{c}\~{o}es. Isso amplia o entendimento de padr\~{o}es e comportamentos t\'ipicos de golpes financeiros, sendo \'{u}til tanto para pesquisadores quanto para desenvolvedores de sistemas de cr\'edito.
+
+\subsubsection{Demonstra\c{c}\~{a}o Pr\'atica da Import\^ancia de Prepara\c{c}\~{a}o de Dados}
+- O estudo destacou a complexidade e a import\^ancia de preparar um dataset adequado para an\'alise de fraudes. A comunidade cient\'{\i}fica se beneficia dessa experi\^{e}ncia ao reconhecer que a etapa de engenharia de dados \'{e} cr\'{\i}tica para o sucesso de modelos preditivos.
+
+\subsubsection{Direcionamento para Estudos Futuros}
+- O trabalho prop\^os dire\c{c}\~{o}es claras para pesquisas futuras, como:
+  \begin{itemize}
+      \item Avalia\c{c}\~{a}o de t\'ecnicas h\'{\i}bridas que combinem detec\c{c}\~{a}o de anomalias e m\'etodos supervisionados.
+      \item Investiga\c{c}\~{a}o de novas vari\'{a}veis derivadas que possam capturar sinais de golpes financeiros.
+      \item Estudo sobre t\'ecnicas de balanceamento de dados em cen\'arios de fraudes.
+  \end{itemize}
+
+O estudo contribuiu tecnicamente ao explorar e avaliar diferentes paradigmas para identifica\c{c}\~{a}o de golpes financeiros, desde a implementa\c{c}\~{a}o do CBA at\'e a ado\c{c}\~{a}o do Isolation Forest. Para a comunidade cient\'{\i}fica, os insights gerados sobre os limites de algoritmos supervisionados em datasets desbalanceados, aliados \`as propostas para futuras pesquisas, enriquecem o campo de detec\c{c}\~{a}o de fraudes e modelagem de cr\'edito. Essas contribui\c{c}\~{o}es oferecem n\~{a}o apenas um avan\c{c}o pr\'atico para a empresa, mas tamb\'{\e}m uma base s\'olida para estudos acad\^{e}micos e industriais futuros.
+
+\subsection{Trabalhos Futuros}
+
+Os trabalhos futuros concentrar-se-\~{a}o no desenvolvimento de um novo algoritmo de score de cr\'edito que incorpore caracter\'isticas ainda n\~{a}o utilizadas, como a detec\c{c}\~{a}o de anomalias. Esse novo modelo ser\'a baseado em vari\'aveis previamente calculadas e regras aplicadas diretamente, eliminando a necessidade de criar um preditor espec\'ifico para identificar golpes financeiros. Dessa forma, as vari\'aveis incluir\~{a}o an\'alises robustas que resultem em um score de cr\'edito mais confi\'avel e resiliente.
+
+Al\'em disso, futuras pesquisas incluir\~{a}o uma revis\~{a}o bibliogr\'afica aprofundada sobre o desenvolvimento de modelos de score de cr\'edito. Essa revis\~{a}o abordar\'a as vari\'aveis mais utilizadas e as t\'ecnicas de intelig\^encia artificial recomendadas. Complementarmente, ser\~{a}o realizados experimentos pr\'aticos com a implementa\c{c}\~{a}o de diferentes m\'etodos e modelos, buscando identificar as abordagens mais eficazes e adequadas para o contexto do estudo.
+
+Outra linha de pesquisa envolver\'a a implementa\c{c}\~{a}o de uma lista dos principais modelos de classifica\c{c}\~{a}o, detec\c{c}\~{a}o de anomalias e aprendizado profundo, utilizando redes neurais. A aplica\c{c}\~{a}o de redes neurais poder\'a trazer resultados satisfat\'orios devido \`a sua capacidade de adapta\c{c}\~{a}o em cen\'arios complexos. A avalia\c{c}\~{a}o comparativa entre os diferentes algoritmos implementados permitir\'a identificar a solu\c{c}\~{a}o mais adequada.
+
+Por fim, o aprofundamento em t\'ecnicas de data mining ser\'a uma \área de estudo relevante. Como demonstrado no trabalho atual, foi necess\'ario um esfor\c{c}o significativo para preparar o dataset antes da aplica\c{c}\~{a}o dos modelos. O uso de data mining permitir\'a extrair conhecimento valioso dos dados e otimizar o processo de prepara\c{c}\~{a}o para an\'alises futuras.
+
 
 % REFERÊNCIAS
 \newpage
 \bibliographystyle{abnt-alf}
 \bibliography{biblproj} % Certifique-se de que o arquivo biblproj.bib está correto
+
+
+
+
 
 
 
