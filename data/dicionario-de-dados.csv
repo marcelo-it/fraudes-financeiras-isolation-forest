@@ -1,0 +1,20 @@
+Nome da Variável,Tipo de Dados,Descrição,Exemplo de Valor
+customerID,String,CNPJ Identificação única da empresa (Cadastro Nacional da Pessoa Jurídica),43454446000107
+updated,Date,Data da informação (Mês e Ano)  formato YYYY-MM,2025-05
+rating,String,Classificação do risco de performance empresa (score de crédito),A
+name,String,Nome oficial da empresa,CISP Central de Informações São Paulo
+cnae,String,CNAE (Código da Atividade Econômica Principal da Empresa),94.11-1-00
+status,String,Situação cadastral da empresa junto a Receita Federal do Brasil,ATIVA
+registration,Date,Data de cadastro da empresa na CISP,1972-11-30
+foundation,Date,Data de Fundação da empresa,2000-01-15
+address,String,Endereço da empresa,R DO BOSQUE 1589 ANEXO II ANDAR 15
+neighborhood,String,Bairro da empresa,BARRA FUNDA
+city,String,Cidade da empresa,SAO PAULO
+state,String,Estado da empresa (Unidade Federativa),SP
+zipCode,Int,CEP da empresa,01136001
+queries,Int,Quantidade de consultas realizadas pelos associados para o CNPJ,33
+amountGreaterAccumulation,Float,Valor do Maior Acúmulo (Valor consolidado contendo todos associados),500000.00
+quantityGreaterAccumulation,Int,Quantidade de associadas que compõem o Valor o Maior Acúmulo,10
+amountDebit,Float,Valor do Débito Total (Valor consolidado contendo todos associados),300000.00
+quantityDebit,Int,Quantidade de associadas que compõem o Débito Total,5
+lastPurchase,Date,Data da Última Compra (mais recente),2024-12-30
