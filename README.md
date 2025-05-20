@@ -4,7 +4,7 @@ Este repositório apresenta uma metodologia criada para detectar fraudes finance
 
 ## Metodologia
 
-![Metodologia de detecção de fraudes](image-1.png)
+![Fluxo de detecção de fraudes](images/image-1.png)
 
 ## Contexto
 
