@@ -1,6 +1,12 @@
 # Detecção de Fraudes Financeiras na Concessão de Crédito a Empresas de Bens de Consumo utilizando Isolation Forest
 
-## Sobre a CISP
+Este repositório apresenta uma metodologia criada para detectar fraudes financeiras na concessão de crédito utilizando o algoritmo **Isolation Forest**. A metodologia foi desenvolvida a partir de um dataset original, passando pela transformação dos dados e criação de novas variáveis que fazem sentido para a análise de risco de crédito.
+
+## Metodologia
+
+![Metodologia de detecção de fraudes](image-1.png)
+
+## Contexto
 
 A **CISP (Central de Informações São Paulo)** é uma associação sem fins lucrativos, fundada em 1972, cuja missão é oferecer soluções exclusivas para a análise de risco de crédito, contribuindo ativamente para o desenvolvimento econômico nacional. A entidade é composta por 192 grandes indústrias de produtos de largo consumo, distribuídas em oito segmentos — Alimentos, Bebidas, Higiene Pessoal e Cosméticos, Papel, Papelaria, Utilidades Domésticas, Eletroeletrônicos e Produtos de Limpeza —, representando aproximadamente 8% do Produto Interno Bruto (PIB) brasileiro.
 
@@ -8,7 +14,7 @@ A atuação da CISP é direcionada exclusivamente a clientes pessoas jurídicas,
 
 Fóruns técnicos promovidos pela CISP revelaram oportunidades de aprimoramento nos modelos tradicionais de análise de risco, especialmente na identificação de comportamentos atípicos que possam indicar possíveis fraudes. Casos emblemáticos incluem crescimento anormal no volume de compras, alterações cadastrais recentes e inconsistências entre a data de fundação da empresa e seu tempo efetivo de atividade. Dados preliminares apontam que aproximadamente 148 mil empresas — cerca de 15% da base de clientes — encontram-se em situação de inadimplência severa, acumulando dívidas superiores a R$ 2,1 bilhões.
 
-Diante desse contexto, o objetivo deste artigo é propor e validar uma metodologia baseada em inteligência artificial, utilizando o algoritmo não supervisionado **Isolation Forest** para a detecção de anomalias que possam sinalizar potenciais fraudes financeiras.
+Diante desse contexto, o objetivo desta metodologia é propor e validar uma metodologia baseada em inteligência artificial, utilizando o algoritmo não supervisionado **Isolation Forest** para a detecção de anomalias que possam sinalizar potenciais fraudes financeiras.
 
 ## Desenvolvimento
 
@@ -27,7 +33,7 @@ Esses comportamentos, quando monitorados em conjunto, contribuem para a constru�
 
 ### 2.2 Materiais e Ferramentas
 
-O estudo foi conduzido em **Google Colab**, com Python 3. As principais bibliotecas utilizadas foram:
+A metodologia foi desenvolvida em **Google Colab**, com Python 3. As principais bibliotecas utilizadas foram:
 
 - `pandas`, `numpy` — manipulação de dados
 - `hashlib` — anonimização com SHA-256
@@ -62,10 +68,7 @@ Com base nas hipóteses dos especialistas, foram criadas variáveis categóricas
 fraudes-financeiras-isolation-forest/
 ├── data/                   # Conjuntos de dados (raw, processed)
 ├── notebooks/              # Notebooks de análise e modelagem
-├── src/                    # Scripts Python (pré-processamento, treinamento, etc.)
-├── models/                 # Modelos treinados
 ├── reports/                # Resultados e visualizações
-├── main.py                 # Pipeline principal com Isolation Forest
 ├── requirements.txt        # Dependências do projeto
 └── README.md
 ```
