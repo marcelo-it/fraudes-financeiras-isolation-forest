@@ -18,7 +18,7 @@ Diante desse contexto, o objetivo desta metodologia é propor e validar uma meto
 
 ## Desenvolvimento
 
-### 2.1 Identificação de Padrões Comportamentais
+### Identificação de Padrões Comportamentais
 
 A CISP fomenta a interação contínua entre os profissionais de crédito e cobrança das empresas associadas. Esses fóruns têm revelado padrões comportamentais associados a potenciais clientes fraudulentos. Entre os principais sinais:
 
@@ -31,7 +31,7 @@ A CISP fomenta a interação contínua entre os profissionais de crédito e cobr
 
 Esses comportamentos, quando monitorados em conjunto, contribuem para a construção de modelos preditivos mais eficazes na detecção de fraudes.
 
-### 2.2 Materiais e Ferramentas
+### Materiais e Ferramentas
 
 A metodologia foi desenvolvida em **Google Colab**, com Python 3. As principais bibliotecas utilizadas foram:
 
@@ -40,11 +40,11 @@ A metodologia foi desenvolvida em **Google Colab**, com Python 3. As principais 
 - `matplotlib`, `seaborn` — visualização
 - `scikit-learn` — algoritmo Isolation Forest
 
-### 2.3 Compreensão dos Dados
+### Compreensão dos Dados
 
 O dataset utilizado contém **2.191.293 observações** e **19 variáveis**, representando **647.132 CNPJs distintos**, sem duplicatas.
 
-### 2.4 Criação de Novas Variáveis
+### Criação de Novas Variáveis
 
 Com base nas hipóteses dos especialistas, foram criadas variáveis categóricas auxiliares para apoiar na detecção de comportamentos suspeitos.
 
